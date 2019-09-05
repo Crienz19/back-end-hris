@@ -89,7 +89,7 @@ class EmployeeController extends Controller
             'position'          =>  $request->input('position')
         ]);
 
-        return $this->index();
+        return $this->show($id);
     }
 
     /**
