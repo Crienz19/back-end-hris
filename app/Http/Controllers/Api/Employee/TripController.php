@@ -56,7 +56,17 @@ class TripController extends Controller
 
     public function update(Request $request, $id)
     {
-        $updateTrip = $this->trip->updateTrip(['id' => $id], $request->all());
+        $data = [
+            'date_from'         =>  $request->input('date_from'),
+            'date_to'           =>  $request->input('date_to'),
+            'time_in'           =>  $request->input('time_in'),
+            'time_out'          =>  $request->input('time_out'),
+            'destination_from'  =>  $request->input('destination_from'),
+            'destination_to'    =>  $request->input('destination_to'),
+            'purpose'           =>  $request->input('purpose')
+        ];
+
+        $updateTrip = $this->trip->updateTrip(['id' => $id], $data);
 
         return response()->json([
             'message'   =>  'Trip Updated'

@@ -47,7 +47,11 @@ class COEController extends Controller
 
     public function update(Request $request, $id)
     {
-        COE::find($id)->update($request->all());
+        COE::find($id)->update([
+            'date_needed'   =>  $request->input('date_needed'),
+            'reason'        =>  $request->input('reason'),
+            'compensation'  =>  $request->input('compensation')
+        ]);
 
         return response()->json([
             'message'   =>  'COE updated!'
