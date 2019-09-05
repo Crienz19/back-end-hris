@@ -21,9 +21,9 @@ class CreateTripsTable extends Migration
             $table->string('time_in');
             $table->string('time_out');
             $table->string('destination_from');
-            $table->string('destiantion_to');
+            $table->string('destination_to');
             $table->longText('purpose');
-            $table->string('status');
+            $table->string('status')->default('Pending');
             $table->timestamps();
         });
     }

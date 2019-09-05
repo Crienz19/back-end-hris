@@ -20,11 +20,11 @@ class CreateLeavesTable extends Migration
             $table->string('pay_type');
             $table->string('from');
             $table->string('to');
-            $table->string('time_from');
-            $table->string('time_to');
+            $table->string('time_from')->nullable();
+            $table->string('time_to')->nullable();
             $table->longText('reason');
-            $table->string('recommending_approval');
-            $table->string('final_approval');
+            $table->string('recommending_approval')->default('Pending');
+            $table->string('final_approval')->default('Pending');
             $table->double('count');
             $table->timestamps();
         });

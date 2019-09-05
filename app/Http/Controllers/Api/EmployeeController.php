@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Employee;
@@ -35,6 +36,10 @@ class EmployeeController extends Controller
      */
     public function store(Request $request)
     {
+        User::find(auth()->user())->update([
+            'isFilled'  =>  1
+        ]);
+
         $storedEmployee = Employee::create($request->all());
 
         return new EmployeeResource($storedEmployee);

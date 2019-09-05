@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Credit;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\User\UserResource;
@@ -27,6 +28,19 @@ class AuthController extends Controller
             'name'          =>  $request->input('name'),
             'password'      =>  bcrypt($request->input('password')),
             'role'          =>  'employee'
+        ]);
+
+
+        Credit::create([
+            'user_id'   =>  $user->id,
+            'VL'        =>  6,
+            'SL'        =>  6,
+            'PTO'       =>  0,
+            'OT'        =>  0,
+            'OB'        =>  0,
+            'total_VL'  =>  6,
+            'total_SL'  =>  6,
+            'total_PTO' =>  0
         ]);
 
         return new UserResource($user);

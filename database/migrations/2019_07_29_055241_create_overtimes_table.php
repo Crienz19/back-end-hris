@@ -20,7 +20,7 @@ class CreateOvertimesTable extends Migration
             $table->string('from');
             $table->string('to');
             $table->longText('reason');
-            $table->string('status');
+            $table->string('status')->default('Pending');
             $table->timestamps();
         });
     }
