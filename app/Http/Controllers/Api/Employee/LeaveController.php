@@ -85,7 +85,23 @@ class LeaveController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $updatedLeave = $this->leave->updateLeave(['id' => $id], $request->all());
+        $dt1 = new \DateTime($request->input('from'));
+        $dt2 = new \DateTime($request->input('to'));
+        $diff = $dt1->diff($dt2);
+
+        $data = [
+            'user_id'   =>  auth()->user()->id,
+            'type'      =>  $request->input('type'),
+            'pay_type'  =>  $request->input('pay_type'),
+            'from'      =>  $request->input('from'),
+            'to'        =>  $request->input('to'),
+            'time_from' =>  $request->input('time_from'),
+            'time_to'   =>  $request->input('time_to'),
+            'reason'    =>  $request->input('reason'),
+            'count'     =>  ($request->input('from') == $request->input('to')) ? 1 : $diff->d
+        ];
+
+        $updatedLeave = $this->leave->updateLeave(['id' => $id], $data);
 
         return response()->json([
             'message'   =>  'Leave Updated'
