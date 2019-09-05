@@ -36,7 +36,7 @@ class EmployeeController extends Controller
      */
     public function store(Request $request)
     {
-        User::find(auth()->user())->update([
+        User::find(auth()->user()->id)->update([
             'isFilled'  =>  1
         ]);
 
