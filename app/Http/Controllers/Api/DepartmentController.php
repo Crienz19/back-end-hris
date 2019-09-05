@@ -69,7 +69,12 @@ class DepartmentController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $updatedDepartment = $this->department->updateDepartment(['id' => $id], $request->all());
+        $updatedDepartment = $this->department->updateDepartment(['id' => $id], [
+            'id'            =>  $request->input('id'),
+            'name'          =>  $request->input('name'),
+            'display_name'  =>  $request->input('display_name'),
+            'supervisor_id' =>  $request->input('supervisor_id')
+        ]);
 
         return response()->json([
             'message'   =>  'Department Update'
