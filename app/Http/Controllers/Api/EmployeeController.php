@@ -68,13 +68,13 @@ class EmployeeController extends Controller
     public function update(Request $request, $id)
     {
         $updateEmployee = Employee::where('user_id', $id)->update([
-            'first_name'    =>  $request->input('first_name'),
-            'middle_name'   =>  $request->input('middle_name'),
-            'last_name'     =>  $request->input('last_name'),
-            'birth_date'    =>  $request->input('birth_date'),
-            'civil_status'  =>  $request->input('civil_status'),
-            'contact_no_1'  =>  $request->input('contact_no_1'),
-            'contact_no_2'  =>  $request->input('contact_no_2'),
+            'first_name'        =>  $request->input('first_name'),
+            'middle_name'       =>  $request->input('middle_name'),
+            'last_name'         =>  $request->input('last_name'),
+            'birth_date'        =>  $request->input('birth_date'),
+            'civil_status'      =>  $request->input('civil_status'),
+            'contact_no_1'      =>  $request->input('contact_no_1'),
+            'contact_no_2'      =>  $request->input('contact_no_2'),
             'present_address'   =>  $request->input('present_address'),
             'permanent_address' =>  $request->input('permanent_address'),
             'sss'               =>  $request->input('sss'),
@@ -89,7 +89,7 @@ class EmployeeController extends Controller
             'position'          =>  $request->input('position')
         ]);
 
-        return new EmployeeResource($updateEmployee);
+        return $this->index();
     }
 
     /**
