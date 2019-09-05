@@ -77,7 +77,14 @@ class OvertimeController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $updateOvertime = $this->overtime->updateOvertime(['id' => $id], $request->all());
+        $data = [
+            'date'      =>  $request->input('date'),
+            'from'      =>  $request->input('from'),
+            'to'        =>  $request->input('to'),
+            'reason'    =>  $request->input('reason')
+        ];
+
+        $updateOvertime = $this->overtime->updateOvertime(['id' => $id], $data);
 
         return response()->json([
             'message'   =>  'Overtime Updated'
