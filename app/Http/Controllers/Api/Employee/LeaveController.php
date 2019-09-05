@@ -1,0 +1,109 @@
+<?php
+
+namespace App\Http\Controllers\Api\Employee;
+
+use App\Http\Resources\Leave\LeaveResourceWithUpdateDelete;
+use App\Notifications\Employee\LeaveEmToSupNotification;
+use App\Repositories\Leave\ILeaveRepository;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Leave;
+use App\Http\Resources\Leave\LeaveResource;
+use Illuminate\Support\Facades\Notification;
+
+class LeaveController extends Controller
+{
+    private $leave;
+    public function __construct(ILeaveRepository $leaveRepository)
+    {
+        $this->middleware('auth:api');
+        $this->leave = $leaveRepository;
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        $leaves = $this->leave->getLeaveBy(['user_id' => auth()->user()->id]);
+
+        return LeaveResourceWithUpdateDelete::collection($leaves);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        $dt1 = new \DateTime($request->input('from'));
+        $dt2 = new \DateTime($request->input('to'));
+        $diff = $dt1->diff($dt2);
+
+        $data = [
+            'user_id'   =>  auth()->user()->id,
+            'type'      =>  $request->input('type'),
+            'pay_type'  =>  $request->input('pay_type'),
+            'from'      =>  $request->input('from'),
+            'to'        =>  $request->input('to'),
+            'time_from' =>  $request->input('time_from'),
+            'time_to'   =>  $request->input('time_to'),
+            'reason'    =>  $request->input('reason'),
+            'count'     =>  ($request->input('from') == $request->input('to')) ? 1 : $diff->d
+        ];
+
+        $storedLeave = $this->leave->saveLeave($data);
+
+        Notification::route('mail', 'rmergenio@ziptravel.com.ph')->notify(new LeaveEmToSupNotification($data));
+
+        return new LeaveResource($storedLeave);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        $selectedLeave = $this->leave->getOneLeave(['id' => $id]);
+
+        return new LeaveResource($selectedLeave);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        $updatedLeave = $this->leave->updateLeave(['id' => $id], $request->all());
+
+        return response()->json([
+            'message'   =>  'Leave Updated'
+        ], 200);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        $deletedLeave = $this->leave->deleteLeave($id);
+
+        return response()->json([
+            'message'   =>  'Leave Deleted'
+        ], 200);
+    }
+}
