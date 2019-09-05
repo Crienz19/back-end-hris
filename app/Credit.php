@@ -9,6 +9,7 @@ class Credit extends Model
     protected $fillable = [
         'user_id',
         'VL',
+        'SL',
         'OT',
         'OB',
         'PTO',
