@@ -3,6 +3,7 @@
 namespace App\Http\Resources\Overtime;
 
 use App\Http\Resources\Employee\EmployeeResource;
+use App\Http\Resources\Employee\EmployeeResourceWithCompleteDetails;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class OvertimeResourceWithEmployeeAndActions extends JsonResource
@@ -28,7 +29,7 @@ class OvertimeResourceWithEmployeeAndActions extends JsonResource
             ],
             'reason'    =>  $this->reason,
             'status'    =>  $this->status,
-            'employee'  =>  new EmployeeResource($this->employee),
+            'employee'  =>  new EmployeeResourceWithCompleteDetails($this->employee),
             'created_at'=>  $this->created_at,
             'actions'   =>  [
                 'approve'       =>  route('hr.overtimes.approve', $this->id),

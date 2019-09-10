@@ -67,3 +67,18 @@ Route::prefix('em')->name('em.')->group(function () {
         'coes'          =>  'Api\Employee\COEController'
     ]);
 });
+
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::get('/leaves/getEmployee', 'Api\Administrator\LeaveController@getEmployeeLeave')->name('leaves.getEmployee');
+    Route::get('/leaves/getSupervisor', 'Api\Administrator\LeaveController@getSupervisorLeave')->name('leaves.getSupervisor');
+    Route::patch('/leaves/{id}/approved', 'Api\Administrator\LeaveController@approveSupervisorLeave')->name('leaves.supervisor.approve');
+    Route::patch('/leaves/{id}/disapproved', 'Api\Administrator\LeaveController@disapproveSupervisorLeave')->name('leaves.supervisor.disapprove');
+    Route::post('/leaves/supervisor/filter', 'Api\Administrator\LeaveController@filterSupervisorLeave')->name('leaves.supervisor.filter');
+    Route::post('/leaves/employee/filter', 'Api\Administrator\LeaveController@filterEmployeeLeave')->name('leaves.employee.filter');
+
+    Route::get('/overtimes/getEmployee', 'Api\Administrator\OvertimeController@getEmployeeOvertime')->name('overtimes.getEmployee');
+    Route::get('/overtimes/getSupervisor', 'Api\Administrator\OvertimeController@getSupervisorOvertime')->name('overtimes.getSupervisor');
+
+    Route::get('/trips/getEmployee', 'Api\Administrator\TripController@getEmployeeTrip')->name('trips.getEmployee');
+    Route::get('/trips/getSupervisor', 'Api\Administrator\TripController@getSupervisorTrip')->name('trips.getSupervisor');
+});

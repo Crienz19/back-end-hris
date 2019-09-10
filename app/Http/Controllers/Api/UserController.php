@@ -19,13 +19,21 @@ class UserController extends Controller
     {
         switch (auth()->user()->role) {
             case 'superadministrator':
-                $users = User::where('id', '!=', auth()->user()->id)
-                    ->get();
+                $users = User::where('role', '!=', 'superadministrator')
+                             ->where('role', '!=', 'hr')
+                             ->where('role', '!=', 'administrator')
+                             ->get();
                 break;
             case 'hr':
                 $users = User::where('role', '!=', 'superadministrator')
                     ->where('role', '!=', 'hr')
                     ->get();
+                break;
+            case 'administrator':
+                $users = User::where('role', '!=', 'superadministrator')
+                            ->where('role', '!=', 'hr')
+                            ->where('role', '!=', 'administrator')
+                            ->get();
                 break;
             default:
                 $users = User::where('role', '!=', 'superadministrator')
