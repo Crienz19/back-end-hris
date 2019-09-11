@@ -104,4 +104,11 @@ class EmployeeController extends Controller
 
         return new EmployeeResource($deletedEmployee);
     }
+
+    public function registeredEmployees()
+    {
+        $employees = Employee::all();
+
+        return EmployeeResourceWithCompleteDetails::collection($employees);
+    }
 }

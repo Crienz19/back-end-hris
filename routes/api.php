@@ -7,6 +7,8 @@ Route::prefix('auth')->group(function () {
     Route::get('/me', 'Api\AuthController@me');
 });
 
+Route::get('/employees/registered', 'Api\EmployeeController@registeredEmployees')->name('employees.registered');
+
 Route::apiResources([
     'users'         =>  'Api\UserController',
     'employees'     =>  'Api\EmployeeController',
@@ -78,7 +80,11 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
     Route::get('/overtimes/getEmployee', 'Api\Administrator\OvertimeController@getEmployeeOvertime')->name('overtimes.getEmployee');
     Route::get('/overtimes/getSupervisor', 'Api\Administrator\OvertimeController@getSupervisorOvertime')->name('overtimes.getSupervisor');
+    Route::post('/overtimes/supervisor/filter', 'Api\Administrator\OvertimeController@filterSupervisorOvertime')->name('overtimes.supervisor.filter');
+    Route::post('/overtimes/employee/filter', 'Api\Administrator\OvertimeController@filterEmployeeOvertime')->name('overtimes.employee.fitler');
 
     Route::get('/trips/getEmployee', 'Api\Administrator\TripController@getEmployeeTrip')->name('trips.getEmployee');
     Route::get('/trips/getSupervisor', 'Api\Administrator\TripController@getSupervisorTrip')->name('trips.getSupervisor');
+    Route::post('/trips/supervisor/filter', 'Api\Administrator\TripController@filterSupervisorTrip')->name('trips.supervisor.filter');
+    Route::post('/trips/employee/filter', 'Api\Administrator\TripController@filterEmployeeTrip')->name('trips.employee.filter');
 });

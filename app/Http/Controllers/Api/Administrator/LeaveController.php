@@ -15,6 +15,10 @@ use Illuminate\Support\Facades\DB;
 
 class LeaveController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+    }
 
     public function getEmployeeLeave()
     {
@@ -55,13 +59,13 @@ class LeaveController extends Controller
     public function filterSupervisorLeave(Request $request)
     {
         $leaves = $this->filterLeaves('supervisor', $request->input('date_from'), $request->input('date_to'), $request->input('status'));
-        return LeaveResourceWithEmployeeAndActions::collection($leaves);
+        return LeaveResourceWithFullEmployeeAndActions::collection($leaves);
     }
 
     public function filterEmployeeLeave(Request $request)
     {
         $leaves = $this->filterLeaves('employee', $request->input('date_from'), $request->input('date_to'), $request->input('status'));
-        return LeaveResourceWithEmployeeAndActions::collection($leaves);
+        return LeaveResourceWithFullEmployeeAndActions::collection($leaves);
     }
 
     private function getLeavesByRole($role)
