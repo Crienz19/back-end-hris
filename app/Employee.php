@@ -43,4 +43,9 @@ class Employee extends Model
     {
         return $this->hasOne('App\Credit', 'user_id', 'user_id');
     }
+
+    public function user()
+    {
+        return $this->belongsTo('App\User');
+    }
 }

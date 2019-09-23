@@ -3,6 +3,7 @@
 namespace App\Http\Resources\Employee;
 
 use App\Http\Resources\Credit\CreditResource;
+use App\Http\Resources\User\UserResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\Branch\BranchResource;
 use App\Http\Resources\Department\DepartmentResource;
@@ -38,7 +39,8 @@ class EmployeeResourceWithCompleteDetails extends JsonResource
             'position'          =>  $this->position,
             'branch'            =>  new BranchResource($this->branch),
             'department'        =>  new DepartmentResource($this->department),
-            'credit'            =>  new CreditResource($this->credit)
+            'credit'            =>  new CreditResource($this->credit),
+            'user'              =>  new UserResource($this->user)
         ];
     }
 }

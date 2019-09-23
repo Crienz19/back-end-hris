@@ -8,6 +8,7 @@ Route::prefix('auth')->group(function () {
 });
 
 Route::get('/employees/registered', 'Api\EmployeeController@registeredEmployees')->name('employees.registered');
+Route::post('/employees/photo', 'Api\EmployeeController@updateImage')->name('employees.photo');
 
 Route::apiResources([
     'users'         =>  'Api\UserController',

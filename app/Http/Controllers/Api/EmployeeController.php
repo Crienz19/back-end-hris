@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Employee;
 use App\Http\Resources\Employee\EmployeeResource;
 use App\Http\Resources\Employee\EmployeeResourceWithCompleteDetails;
+use Illuminate\Support\Facades\File;
 
 class EmployeeController extends Controller
 {
@@ -92,12 +93,27 @@ class EmployeeController extends Controller
         return $this->show($id);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    public function updateImage(Request $request)
+    {
+        $request->validate([
+            'image' => 'required',
+        ]);
+
+        $user = User::find(auth()->user()->id);
+
+        $image = $request->file('image');
+
+        $imageName = uniqid().time().'.'.$image->getClientOriginalExtension();
+
+        $request->image->move(public_path('images'), $imageName);
+
+        $user->update([
+            'profile_image' =>  $imageName
+        ]);
+
+        return $this->show(auth()->user()->id);
+    }
+
     public function destroy($id)
     {
         $deletedEmployee = Employee::find($id)->delete();

@@ -41,9 +41,10 @@ class LeaveDisapprovedNotification extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
+                ->from('hris@no_reply', 'HRIS Notification')
+                ->subject('Leave Disapproved')
+                ->greeting('Leave Disapproved')
+                ->line('Leave Disapproved!');
     }
 
     /**
