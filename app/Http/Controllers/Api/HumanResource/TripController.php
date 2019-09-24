@@ -3,9 +3,13 @@
 namespace App\Http\Controllers\Api\HumanResource;
 
 use App\Http\Resources\Trip\TripResourceWithEmployeeAndActions;
+use App\Notifications\HumanResource\TripApproveNotification;
 use App\Repositories\Trip\ITripRepository;
+use App\Trip;
+use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Notification;
 
 class TripController extends Controller
 {
@@ -79,7 +83,13 @@ class TripController extends Controller
 
     public function acknowledge($id)
     {
-        $this->trip->acknowledgeTrip($id);
+        $trip = Trip::find($id);
+
+        $trip->update([
+            'status'    =>  'Acknowledged'
+        ]);
+
+        Notification::route('mail', User::find($trip->user_id)->email)->notify(new TripApproveNotification());
 
         return response()->json([
             'message'   =>  'Trip Acknowledged!'
