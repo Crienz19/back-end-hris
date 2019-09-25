@@ -7,14 +7,11 @@ use App\Http\Controllers\Controller;
 use App\User;
 use App\Http\Resources\User\UserResource;
 use App\Http\Resources\User\UserResourceWithEmployeeDetails;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
         switch (auth()->user()->role) {
@@ -45,12 +42,6 @@ class UserController extends Controller
         return UserResourceWithEmployeeDetails::collection($users);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         $storedUser = User::create($request->all());
@@ -58,12 +49,6 @@ class UserController extends Controller
         return new UserResource($storedUser);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         $selectedUser = User::find($id);
@@ -71,13 +56,6 @@ class UserController extends Controller
         return new UserResourceWithEmployeeDetails($selectedUser);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         User::find($id)->update($request->all());
@@ -95,5 +73,23 @@ class UserController extends Controller
         return response()->json([
             'message'   =>  'User Deleted'
         ], 200);
+    }
+
+    public function changePassword(Request $request)
+    {
+        if (Auth::attempt(['name' => auth()->user()->name, 'password' => $request->input('current_password')])) {
+
+            User::find(auth()->user()->id)->update([
+                'password'  =>  bcrypt($request->input('new_password'))
+            ]);
+
+            return response()->json([
+                'message'   =>  'Password Changed'
+            ], 200);
+        } else {
+            return response()->json([
+                'message'   =>  'Incorrect Password'
+            ], 401);
+        }
     }
 }

@@ -7,6 +7,7 @@ Route::prefix('auth')->group(function () {
     Route::get('/me', 'Api\AuthController@me');
 });
 
+Route::post('/users/changePassword', 'Api\UserController@changePassword')->name('users.changePassword');
 Route::get('/employees/registered', 'Api\EmployeeController@registeredEmployees')->name('employees.registered');
 Route::post('/employees/photo', 'Api\EmployeeController@updateImage')->name('employees.photo');
 
