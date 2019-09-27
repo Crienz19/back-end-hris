@@ -34,7 +34,7 @@ class Kernel extends ConsoleKernel
         $schedule->call(function () {
             $employee = \App\Employee::all();
             $employee->map(function ($item) {
-                if (date('Y-m-d', strtotime($item['date_hired'])) == date('Y-m-d', '2019-09-27')) {
+                if (date('Y-m-d', strtotime($item['date_hired'])) == date('Y-m-d')) {
                     $credit = \App\Credit::where('user_id', $item['user_id']);
 
                     $credit->update([
