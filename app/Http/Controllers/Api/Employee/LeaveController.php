@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Api\Employee;
 
+use App\Credit;
+use App\Employee;
 use App\Http\Resources\Leave\LeaveResourceWithUpdateDelete;
 use App\Notifications\Employee\LeaveEmToSupNotification;
 use App\Repositories\Leave\ILeaveRepository;
@@ -55,12 +57,89 @@ class LeaveController extends Controller
             'reason'    =>  $request->input('reason'),
             'count'     =>  ($request->input('from') == $request->input('to')) ? 1 : $diff->d
         ];
+        $credit = Credit::where('user_id', auth()->user()->id)->first();
+        $supervisorEmail = \App\Employee::join('departments', 'employees.department_id', '=', 'departments.id')
+            ->join('users', 'users.id', '=', 'departments.supervisor_id')
+            ->where('employees.user_id', auth()->user()->id)
+            ->select('users.email')
+            ->first();
 
-        $storedLeave = $this->leave->saveLeave($data);
+        if ($request->input('pay_type') == 'With Pay') {
+            switch ($request->input('type')) {
+                case 'VL':
+                    if ($credit->VL > 0) {
+                        $this->leave->saveLeave($data);
+                        Notification::route('mail', $supervisorEmail)->notify(new LeaveEmToSupNotification($data));
+                    } else {
+                        return response()->json([
+                            'message'   =>  'You don\'t have Vacation Leave(s)'
+                        ], 401);
+                    }
+                    break;
 
-        Notification::route('mail', 'rmergenio@ziptravel.com.ph')->notify(new LeaveEmToSupNotification($data));
+                case 'SL':
+                    if ($credit->SL > 0) {
+                        $this->leave->saveLeave($data);
+                        Notification::route('mail', $supervisorEmail)->notify(new LeaveEmToSupNotification($data));
+                    } else {
+                        return response()->json([
+                            'message'   =>  'You don\'t have Sick Leave(s)'
+                        ], 401);
+                    }
+                    break;
 
-        return new LeaveResource($storedLeave);
+                case 'PTO':
+                    if ($credit->PTO > 0) {
+                        $this->leave->saveLeave($data);
+                        Notification::route('mail', $supervisorEmail)->notify(new LeaveEmToSupNotification($data));
+                    } else {
+                        return response()->json([
+                            'message'   =>  'You don\'t have Personal Time Off(s)'
+                        ], 401);
+                    }
+                    break;
+                case 'VL-Half':
+                    if ($credit->VL > 0) {
+                        $this->leave->saveLeave($data);
+                        Notification::route('mail', $supervisorEmail)->notify(new LeaveEmToSupNotification($data));
+                    } else {
+                        return response()->json([
+                            'message'   =>  'You don\'t have Vacation Leave(s)'
+                        ], 401);
+                    }
+                    break;
+
+                case 'SL-Half':
+                    if ($credit->SL > 0) {
+                        $this->leave->saveLeave($data);
+                        Notification::route('mail', $supervisorEmail)->notify(new LeaveEmToSupNotification($data));
+                    } else {
+                        return response()->json([
+                            'message'   =>  'You don\'t have Sick Leave(s)'
+                        ], 401);
+                    }
+                    break;
+
+                case 'PTO-Half':
+                    if ($credit->PTO > 0) {
+                        $this->leave->saveLeave($data);
+                        Notification::route('mail', $supervisorEmail)->notify(new LeaveEmToSupNotification($data));
+                    } else {
+                        return response()->json([
+                            'message'   =>  'You don\'t have Personal Time Off(s)'
+                        ], 401);
+                    }
+                    break;
+
+            }
+        } else {
+            $this->leave->saveLeave($data);
+            Notification::route('mail', $supervisorEmail)->notify(new LeaveEmToSupNotification($data));
+
+            return response()->json([
+                'message'   =>  'Leave Submitted!'
+            ], 200);
+        }
     }
 
     /**

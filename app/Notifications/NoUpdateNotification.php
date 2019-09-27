@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Notifications\HumanResource;
+namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class TripDisapproveNotification extends Notification
+class NoUpdateNotification extends Notification
 {
     use Queueable;
 
@@ -41,9 +41,8 @@ class TripDisapproveNotification extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
+                    ->greeting('No Update Notification')
+                    ->line('No Update for this day xD');
     }
 
     /**

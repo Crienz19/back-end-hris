@@ -41,9 +41,10 @@ class TripApproveNotification extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
+                ->greeting('Business Trip Request')
+                ->subject('Business Trip Request')
+                ->from('hris@no_reply', 'HRIS Notification')
+                ->line('Business Trip Request Acknowledged!');
     }
 
     /**

@@ -1,24 +1,21 @@
 <?php
 
-namespace App\Notifications\HumanResource;
+namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class LeaveApproveNotification extends Notification
+class LeaveCreditUpdateNotification extends Notification
 {
     use Queueable;
 
-    /**
-     * Create a new notification instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    private $data;
+
+    public function __construct($data)
     {
-        //
+        $this->data = $data;
     }
 
     /**
@@ -41,10 +38,10 @@ class LeaveApproveNotification extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->greeting('Leave Request')
-                    ->subject('Leave Request')
+                    ->greeting('Leave Credit Update Notification')
+                    ->subject('Leave Credit Update Notification')
                     ->from('hris@no_reply', 'HRIS Notification')
-                    ->line('Leave Request Approved!');
+                    ->line($this->data['first_name'].' '.$this->data['last_name'].' Resetted.');
     }
 
     /**

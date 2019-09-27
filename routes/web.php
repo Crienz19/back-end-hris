@@ -14,3 +14,12 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/test', function () {
+    $supervisorEmail = \App\Employee::join('departments', 'employees.department_id', '=', 'departments.id')
+        ->join('users', 'users.id', '=', 'departments.supervisor_id')
+        ->where('employees.user_id', 5)
+        ->select('users.email')
+        ->first();
+    return $supervisorEmail;
+});

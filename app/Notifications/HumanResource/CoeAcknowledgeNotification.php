@@ -7,7 +7,7 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class LeaveApproveNotification extends Notification
+class CoeAcknowledgeNotification extends Notification
 {
     use Queueable;
 
@@ -41,10 +41,10 @@ class LeaveApproveNotification extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->greeting('Leave Request')
-                    ->subject('Leave Request')
-                    ->from('hris@no_reply', 'HRIS Notification')
-                    ->line('Leave Request Approved!');
+            ->greeting('COE Request')
+            ->subject('COE Request')
+            ->from('hris@no_reply', 'HRIS Notification')
+            ->line('COE Request Acknowledged!');
     }
 
     /**

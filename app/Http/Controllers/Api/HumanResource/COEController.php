@@ -18,9 +18,13 @@ class COEController extends Controller
 
     public function acknowledged($id)
     {
-        COE::find($id)->update([
+        $coe = COE::find($id);
+
+        $coe->update([
             'status'    =>  'Acknowledged'
         ]);
+
+        
 
         return response()->json([
             'message'   =>  'COE Request Acknowledged!'

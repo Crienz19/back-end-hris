@@ -68,30 +68,32 @@ class LeaveController extends Controller
         $leave = $this->leave->getLeaveById($id);
         $this->leave->approveFinalApproval($id);
 
-        switch ($leave->type) {
-            case 'VL':
-                $this->credit->updateVacationLeave($leave->user_id, $leave->count);
-            break;
+        if ($leave['pay_type'] == 'With Pay') {
+            switch ($leave->type) {
+                case 'VL':
+                    $this->credit->updateVacationLeave($leave->user_id, $leave->count);
+                    break;
 
-            case 'SL':
-                $this->credit->updateSickLeave($leave->user_id, $leave->count);
-            break;
+                case 'SL':
+                    $this->credit->updateSickLeave($leave->user_id, $leave->count);
+                    break;
 
-            case 'PTO':
-                $this->credit->updatePersonalTimeOff($leave->user_id, $leave->count);
-            break;
+                case 'PTO':
+                    $this->credit->updatePersonalTimeOff($leave->user_id, $leave->count);
+                    break;
 
-            case 'VL-Half':
-                $this->credit->updateVacationLeave($leave->user_id, 0.5);
-            break;
+                case 'VL-Half':
+                    $this->credit->updateVacationLeave($leave->user_id, 0.5);
+                    break;
 
-            case 'SL-Half':
-                $this->credit->updateSickLeave($leave->user_id, 0.5);
-            break;
+                case 'SL-Half':
+                    $this->credit->updateSickLeave($leave->user_id, 0.5);
+                    break;
 
-            case 'PTO-Half':
-                $this->credit->updatePersonalTimeOff($leave->user_id, 0.5);
-            break;
+                case 'PTO-Half':
+                    $this->credit->updatePersonalTimeOff($leave->user_id, 0.5);
+                    break;
+            }
         }
 
         Notification::route('mail', User::find($leave->user_id)->email)->notify(new LeaveApproveNotification());
