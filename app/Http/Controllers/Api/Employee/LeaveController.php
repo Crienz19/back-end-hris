@@ -62,7 +62,8 @@ class LeaveController extends Controller
             ->join('users', 'users.id', '=', 'departments.supervisor_id')
             ->where('employees.user_id', auth()->user()->id)
             ->select('users.email')
-            ->first();
+            ->first()
+            ->email;
 
         if ($request->input('pay_type') == 'With Pay') {
             switch ($request->input('type')) {
