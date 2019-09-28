@@ -64,7 +64,10 @@ class RoleController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $updatedRole = $this->role->updateRole(['id' => $id], $request->all());
+        $updatedRole = $this->role->updateRole(['id' => $id], [
+            'name'  =>  $request->input('name'),
+            'display_name'  =>  $request->input('display_name')
+        ]);
 
         return response()->json([
             'message'   =>  'Role Updated!'
