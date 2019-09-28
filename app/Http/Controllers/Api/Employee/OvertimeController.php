@@ -48,9 +48,16 @@ class OvertimeController extends Controller
             'reason'    =>  $request->input('reason')
         ];
 
+        $supervisorEmail = \App\Employee::join('departments', 'employees.department_id', '=', 'departments.id')
+            ->join('users', 'users.id', '=', 'departments.supervisor_id')
+            ->where('employees.user_id', auth()->user()->id)
+            ->select('users.email')
+            ->first()
+            ->email;
+
         $storedOvertime = $this->overtime->saveOvertime($data);
 
-        Notification::route('mail', 'rmergenio@ziptravel.com.ph')->notify(new OvertimeEmToSupNotification($data));
+        Notification::route('mail', $supervisorEmail)->notify(new OvertimeEmToSupNotification($data));
 
         return new OvertimeResource($storedOvertime);
     }
