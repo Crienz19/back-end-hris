@@ -70,7 +70,10 @@ class BranchController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $updatedBranch = $this->branch->updateBranch(['id' => $id], $request->all());
+        $updatedBranch = $this->branch->updateBranch(['id' => $id], [
+            'name'  =>  $request->input('name'),
+            'display_name'  =>  $request->input('display_name')
+        ]);
 
         return response()->json([
             'message'   =>  'Branch Updated'
