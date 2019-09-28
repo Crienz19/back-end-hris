@@ -42,7 +42,7 @@ class TripController extends Controller
 
         $storedTrip = $this->trip->saveTrip($data);
 
-        Notification::route('mail', 'rmergenio@ziptravel.com.ph')->notify(new TripEmToHrNotification($data));
+        Notification::route('mail', env('HR_EMAIL'))->notify(new TripEmToHrNotification($data));
 
         return new TripResource($storedTrip);
     }
