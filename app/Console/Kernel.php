@@ -47,8 +47,6 @@ class Kernel extends ConsoleKernel
                     ]);
 
                     Notification::route('mail', env('SUPERADMIN_EMAIL'))->notify(new LeaveCreditUpdateNotification($item));
-                } else {
-                    Notification::route('mail', env('SUPERADMIN_EMAIL'))->notify(new NoUpdateNotification());
                 }
             });
         })->daily();
