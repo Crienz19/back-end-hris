@@ -51,7 +51,7 @@ class Kernel extends ConsoleKernel
                     Notification::route('mail', env('SUPERADMIN_EMAIL'))->notify(new NoUpdateNotification());
                 }
             });
-        })->everyMinute();
+        })->daily();
     }
 
     /**
