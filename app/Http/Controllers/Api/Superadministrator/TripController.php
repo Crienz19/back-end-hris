@@ -22,7 +22,7 @@ class TripController extends Controller
     {
         $trips = $this->trip->allTrips();
 
-        return TripResourceWithEmployeeDetails::collection($trips);
+        return TripResourceWithEmployeeDetails::collection($trips->sortByDesc('created_at'));
     }
 
     public function store(Request $request)

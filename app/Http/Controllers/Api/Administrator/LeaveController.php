@@ -28,7 +28,7 @@ class LeaveController extends Controller
     {
         $leaves = $this->getLeavesByRole('employee');
 
-        return LeaveResourceWithFullEmployeeAndActions::collection($leaves);
+        return LeaveResourceWithFullEmployeeAndActions::collection($leaves->sortByDesc('created_at'));
     }
 
     public function getSupervisorLeave()

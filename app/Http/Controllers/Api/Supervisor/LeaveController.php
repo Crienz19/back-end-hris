@@ -41,7 +41,7 @@ class LeaveController extends Controller
                         ->where('users.role', '=', 'employee')
                         ->get();
 
-        return LeaveResourceWithEmployeeAndActionsForSup::collection($leaves);
+        return LeaveResourceWithEmployeeAndActionsForSup::collection($leaves->sortByDesc('created_at'));
     }
 
     /**

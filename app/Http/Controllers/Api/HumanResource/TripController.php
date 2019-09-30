@@ -29,7 +29,7 @@ class TripController extends Controller
     {
         $leaves = $this->trip->allTrips();
 
-        return TripResourceWithEmployeeAndActions::collection($leaves);
+        return TripResourceWithEmployeeAndActions::collection($leaves->sortByDesc('created_at'));
     }
 
     /**

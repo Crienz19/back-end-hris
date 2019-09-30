@@ -31,7 +31,7 @@ class LeaveController extends Controller
     {
         $leaves = $this->leave->getLeaveBy(['user_id' => auth()->user()->id]);
 
-        return LeaveResourceWithUpdateDelete::collection($leaves);
+        return LeaveResourceWithUpdateDelete::collection($leaves->sortByDesc('created_at'));
     }
 
     /**

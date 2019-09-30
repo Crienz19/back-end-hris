@@ -17,24 +17,26 @@ class OvertimeController extends Controller
 
     public function getEmployeeOvertime()
     {
-        return OvertimeResourceWithEmployeeAndActions::collection($this->getOvertimeByRole('employee'));
+        $overtimes = $this->getOvertimeByRole('employee');
+        return OvertimeResourceWithEmployeeAndActions::collection($overtimes->sortByDesc('created_at'));
     }
 
     public function getSupervisorOvertime()
     {
-        return OvertimeResourceWithEmployeeAndActions::collection($this->getOvertimeByRole('supervisor'));
+        $overtimes = $this->getOvertimeByRole('supervisor');
+        return OvertimeResourceWithEmployeeAndActions::collection($overtimes->sortByDesc('created_at'));
     }
 
     public function filterSupervisorOvertime(Request $request)
     {
         $overtimes = $this->filterOvertime('supervisor', $request->input('date_from'), $request->input('date_to'), $request->input('status'));
-        return OvertimeResourceWithEmployeeAndActions::collection($overtimes);
+        return OvertimeResourceWithEmployeeAndActions::collection($overtimes->sortByDesc('created_at'));
     }
 
     public function filterEmployeeOvertime(Request $request)
     {
         $overtimes = $this->filterOvertime('employee', $request->input('date_from'), $request->input('date_to'), $request->input('status'));
-        return OvertimeResourceWithEmployeeAndActions::collection($overtimes);
+        return OvertimeResourceWithEmployeeAndActions::collection($overtimes->sortByDesc('created_at'));
     }
 
     private function getOvertimeByRole($role)

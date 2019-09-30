@@ -22,7 +22,7 @@ class LeaveController extends Controller
     {
         $leaves = $this->leave->allLeaves();
 
-        return LeaveResourceWithEmployeeDetails::collection($leaves);
+        return LeaveResourceWithEmployeeDetails::collection($leaves->sortByDesc('created_at'));
     }
 
     public function store(Request $request)

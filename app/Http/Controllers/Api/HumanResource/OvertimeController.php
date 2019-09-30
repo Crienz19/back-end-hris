@@ -21,7 +21,7 @@ class OvertimeController extends Controller
     {
         $overtimes = $this->overtime->allOvertimes();
 
-        return OvertimeResourceWithEmployeeAndActions::collection($overtimes);
+        return OvertimeResourceWithEmployeeAndActions::collection($overtimes->sortByDesc('created_at'));
     }
 
     /**

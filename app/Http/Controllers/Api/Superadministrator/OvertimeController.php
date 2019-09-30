@@ -22,7 +22,7 @@ class OvertimeController extends Controller
     {
         $overtimes = $this->overtime->allOvertimes();
 
-        return OvertimeResourceWithEmployeeDetails::collection($overtimes);
+        return OvertimeResourceWithEmployeeDetails::collection($overtimes->sortByDesc('created_at'));
     }
 
     public function store(Request $request)

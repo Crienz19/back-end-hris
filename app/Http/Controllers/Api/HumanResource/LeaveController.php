@@ -34,7 +34,7 @@ class LeaveController extends Controller
     {
         $leaves = $this->leave->getLeaveBy(['recommending_approval' => 'Approved']);
 
-        return LeaveResourceWithEmployeeAndActions::collection($leaves);
+        return LeaveResourceWithEmployeeAndActions::collection($leaves->sortByDesc('created_at'));
     }
 
     public function store(Request $request)

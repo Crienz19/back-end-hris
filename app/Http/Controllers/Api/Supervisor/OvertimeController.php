@@ -41,7 +41,7 @@ class OvertimeController extends Controller
                             ->where('users.role', '=','employee')
                             ->get();
 
-        return OvertimeResourceWithEmployeeAndActionsForSup::collection($overtimes);
+        return OvertimeResourceWithEmployeeAndActionsForSup::collection($overtimes->sortByDesc('created_at'));
     }
 
     /**

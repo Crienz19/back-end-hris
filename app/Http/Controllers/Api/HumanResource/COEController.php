@@ -13,7 +13,7 @@ class COEController extends Controller
     {
         $coe = COE::all();
 
-        return COEResourceWithEmployeeDetailsAndActions::collection($coe);
+        return COEResourceWithEmployeeDetailsAndActions::collection($coe->sortByDesc('created_at'));
     }
 
     public function acknowledged($id)

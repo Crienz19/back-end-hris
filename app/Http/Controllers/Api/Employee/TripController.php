@@ -24,7 +24,7 @@ class TripController extends Controller
     {
         $trips = $this->trip->getTripBy(['user_id' => auth()->user()->id]);
 
-        return TripResourceWithUpdateDelete::collection($trips);
+        return TripResourceWithUpdateDelete::collection($trips->sortByDesc('created_at'));
     }
 
     public function store(Request $request)

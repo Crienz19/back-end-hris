@@ -16,26 +16,28 @@ class TripController extends Controller
 
     public function getEmployeeTrip()
     {
-        return TripResourceWithEmployeeAndActions::collection($this->getTripByRole('employee'));
+        $trips = $this->getTripByRole('employee');
+        return TripResourceWithEmployeeAndActions::collection($trips->sortByDesc('created_at'));
     }
 
     public function getSupervisorTrip()
     {
-        return TripResourceWithEmployeeAndActions::collection($this->getTripByRole('supervisor'));
+        $trips = $this->getTripByRole('supervisor');
+        return TripResourceWithEmployeeAndActions::collection($trips->sortByDesc('created_at'));
     }
 
     public function filterSupervisorTrip(Request $request)
     {
         $trips = $this->filterTrip('supervisor', $request->input('date_from'), $request->input('date_to'), $request->input('status'));
 
-        return TripResourceWithEmployeeAndActions::collection($trips);
+        return TripResourceWithEmployeeAndActions::collection($trips->sortByDesc('created_at'));
     }
 
     public function filterEmployeeTrip(Request $request)
     {
         $trips = $this->filterTrip('employee', $request->input('date_from'), $request->input('date_to'), $request->input('status'));
 
-        return TripResourceWithEmployeeAndActions::collection($trips);
+        return TripResourceWithEmployeeAndActions::collection($trips->sortByDesc('created_at'));
     }
 
     private function getTripByRole($role)
@@ -49,12 +51,12 @@ class TripController extends Controller
 
     private function filterTrip($role, $date_from, $date_to, $status)
     {
-        $leaves = Trip::join('users', 'trips.user_id', '=', 'users.id')
+        $trips = Trip::join('users', 'trips.user_id', '=', 'users.id')
                     ->where('users.role', '=', $role)
                     ->where('trips.status', '=', $status)
                     ->whereBetween('trips.created_at', [$date_from, $date_to])
                     ->get();
 
-        return TripResourceWithEmployeeAndActions::collection($leaves);
+        return TripResourceWithEmployeeAndActions::collection($trips->sortByDesc('created_at'));
     }
 }

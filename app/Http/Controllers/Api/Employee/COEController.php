@@ -15,7 +15,7 @@ class COEController extends Controller
     {
         $coe = COE::where('user_id', '=', auth()->user()->id)->get();
 
-        return COEResource::collection($coe);
+        return COEResource::collection($coe->sortByDesc('created_at'));
     }
 
     public function store(Request $request)

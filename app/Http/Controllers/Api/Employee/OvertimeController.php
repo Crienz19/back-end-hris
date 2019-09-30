@@ -29,7 +29,7 @@ class OvertimeController extends Controller
     {
         $overtimes = $this->overtime->getOvertimeBy(['user_id' => auth()->user()->id]);
 
-        return OvertimeResourceWithUpdateDelete::collection($overtimes);
+        return OvertimeResourceWithUpdateDelete::collection($overtimes->sortByDesc('created_at'));
     }
 
     /**
