@@ -34,7 +34,7 @@ class Kernel extends ConsoleKernel
         $schedule->call(function () {
             $employee = \App\Employee::all();
             $employee->map(function ($item) {
-                if (date('Y-m-d', strtotime($item['date_hired'])) == date('Y-m-d')) {
+                if (date('m-d', strtotime($item['date_hired'])) == date('m-d')) {
                     $credit = \App\Credit::where('user_id', $item['user_id']);
 
                     $credit->update([
@@ -42,7 +42,7 @@ class Kernel extends ConsoleKernel
                         'SL'    =>  (int) $credit->first()->total_SL + 1,
                         'PTO'   =>  (int) $credit->first()->VL + (int) $credit->first()->SL,
                         'total_VL'  =>  (int) $credit->first()->total_VL + 1,
-                        'total_SL'  =>  (int) $credit->first()->total_SL + 1,
+                        'total_SL'  =  >  (int) $credit->first()->total_SL + 1,
                         'total_PTO' =>  (int) $credit->first()->VL + (int) $credit->first()->SL
                     ]);
 
