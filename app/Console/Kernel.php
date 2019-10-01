@@ -42,7 +42,7 @@ class Kernel extends ConsoleKernel
                         'SL'    =>  (int) $credit->first()->total_SL + 1,
                         'PTO'   =>  (int) $credit->first()->VL + (int) $credit->first()->SL,
                         'total_VL'  =>  (int) $credit->first()->total_VL + 1,
-                        'total_SL'  =  >  (int) $credit->first()->total_SL + 1,
+                        'total_SL'  =>  (int) $credit->first()->total_SL + 1,
                         'total_PTO' =>  (int) $credit->first()->VL + (int) $credit->first()->SL
                     ]);
 
