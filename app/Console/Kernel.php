@@ -34,7 +34,7 @@ class Kernel extends ConsoleKernel
         $schedule->call(function () {
             $employee = \App\Employee::all();
             $employee->map(function ($item) {
-                if (date('d-m', strtotime($item['date_hired'])) == date('d-m')) {
+                if (date('m-d', strtotime($item['date_hired'])) == date('m-d')) {
                     $credit = \App\Credit::where('user_id', $item['user_id']);
 
                     $credit->update([
@@ -49,7 +49,8 @@ class Kernel extends ConsoleKernel
                     Notification::route('mail', env('SUPERADMIN_EMAIL'))->notify(new LeaveCreditUpdateNotification($item));
                 }
             });
-        })->daily();
+
+        });
     }
 
     /**
