@@ -60,7 +60,7 @@ class OvertimeController extends Controller
             'reason'    =>  $request->input('reason')
         ]);
 
-        Notification::route('mail', 'rmergenio@ziptravel.com.ph')->notify(new OvertimeEmToSupNotification($overtime));
+        Notification::route('mail', env('ADMIN_EMAIL'))->notify(new OvertimeEmToSupNotification($overtime));
 
         return response()->json([
             'message'   =>  'Overtime Stored!'

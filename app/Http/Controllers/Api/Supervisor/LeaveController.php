@@ -70,7 +70,7 @@ class LeaveController extends Controller
             'final_approval'        =>  'Pending'
         ]);
 
-        Notification::route('mail', 'rmergenio@ziptravel.com.ph')->notify(new LeaveEmToSupNotification($storedLeave));
+        Notification::route('mail', env('ADMIN_EMAIL'))->notify(new LeaveEmToSupNotification($storedLeave));
 
         return response()->json([
             'message'   =>  'Leave Added!'
