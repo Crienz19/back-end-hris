@@ -99,7 +99,7 @@ class LeaveController extends Controller
                         ], 401);
                     }
                     break;
-                case 'VL-Half':
+                case 'VL - Half':
                     if ($credit->VL > 0) {
                         $this->leave->saveLeave($data);
                         Notification::route('mail', $supervisorEmail)->notify(new LeaveEmToSupNotification($data));
@@ -110,7 +110,7 @@ class LeaveController extends Controller
                     }
                     break;
 
-                case 'SL-Half':
+                case 'SL - Half':
                     if ($credit->SL > 0) {
                         $this->leave->saveLeave($data);
                         Notification::route('mail', $supervisorEmail)->notify(new LeaveEmToSupNotification($data));
@@ -121,7 +121,7 @@ class LeaveController extends Controller
                     }
                     break;
 
-                case 'PTO-Half':
+                case 'PTO - Half':
                     if ($credit->PTO > 0) {
                         $this->leave->saveLeave($data);
                         Notification::route('mail', $supervisorEmail)->notify(new LeaveEmToSupNotification($data));
