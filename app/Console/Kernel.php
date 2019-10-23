@@ -40,10 +40,10 @@ class Kernel extends ConsoleKernel
                     $credit->update([
                         'VL'    =>  (int) $credit->first()->total_VL + 1,
                         'SL'    =>  (int) $credit->first()->total_SL + 1,
-                        'PTO'   =>  (int) $credit->first()->VL + (int) $credit->first()->SL,
+                        'PTO'   =>  (double) $credit->first()->VL + (double) $credit->first()->SL,
                         'total_VL'  =>  (int) $credit->first()->total_VL + 1,
                         'total_SL'  =>  (int) $credit->first()->total_SL + 1,
-                        'total_PTO' =>  (int) $credit->first()->VL + (int) $credit->first()->SL
+                        'total_PTO' =>  (double) $credit->first()->VL + (double) $credit->first()->SL
                     ]);
 
                     Notification::route('mail', env('SUPERADMIN_EMAIL'))->notify(new LeaveCreditUpdateNotification($item));
