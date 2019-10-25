@@ -56,25 +56,31 @@ class LeaveController extends Controller
         $dt2 = new \DateTime($request->input('to'));
         $diff = $dt1->diff($dt2);
 
-        $storedLeave = Leave::create([
-            'user_id'               =>  auth()->user()->id,
-            'type'                  =>  $request->input('type'),
-            'pay_type'              =>  $request->input('pay_type'),
-            'from'                  =>  $request->input('from'),
-            'to'                    =>  $request->input('to'),
-            'time_from'             =>  $request->input('time_from'),
-            'time_to'               =>  $request->input('time_to'),
-            'reason'                =>  $request->input('reason'),
-            'count'                 =>  ($request->input('from') == $request->input('to')) ? 1 : $diff->d,
-            'recommending_approval' =>  'Approved',
-            'final_approval'        =>  'Pending'
-        ]);
+        if ($diff->d > 3) {
+            return response()->json([
+                'message'   =>  'You can\'t file more than 3 leaves.'
+            ], 401);
+        } else {
+            $storedLeave = Leave::create([
+                'user_id'               =>  auth()->user()->id,
+                'type'                  =>  $request->input('type'),
+                'pay_type'              =>  $request->input('pay_type'),
+                'from'                  =>  $request->input('from'),
+                'to'                    =>  $request->input('to'),
+                'time_from'             =>  $request->input('time_from'),
+                'time_to'               =>  $request->input('time_to'),
+                'reason'                =>  $request->input('reason'),
+                'count'                 =>  ($request->input('from') == $request->input('to')) ? 1 : $diff->d,
+                'recommending_approval' =>  'Approved',
+                'final_approval'        =>  'Pending'
+            ]);
 
-        Notification::route('mail', env('ADMIN_EMAIL'))->notify(new LeaveEmToSupNotification($storedLeave));
+            Notification::route('mail', env('ADMIN_EMAIL'))->notify(new LeaveEmToSupNotification($storedLeave));
 
-        return response()->json([
-            'message'   =>  'Leave Added!'
-        ], 200);
+            return response()->json([
+                'message'   =>  'Leave Added!'
+            ], 200);
+        }
     }
 
     /**
@@ -97,12 +103,34 @@ class LeaveController extends Controller
      */
     public function update(Request $request, $id)
     {
-        Leave::find($id)
-             ->update($request->all());
+        $dt1 = new \DateTime($request->input('from'));
+        $dt2 = new \DateTime($request->input('to'));
+        $diff = $dt1->diff($dt2);
 
-        return response()->json([
-            'message'   =>  'Updated Leave'
-        ], 200);
+        $data = [
+            'user_id'   =>  auth()->user()->id,
+            'type'      =>  $request->input('type'),
+            'pay_type'  =>  $request->input('pay_type'),
+            'from'      =>  $request->input('from'),
+            'to'        =>  $request->input('to'),
+            'time_from' =>  $request->input('time_from'),
+            'time_to'   =>  $request->input('time_to'),
+            'reason'    =>  $request->input('reason'),
+            'count'     =>  ($request->input('from') == $request->input('to')) ? 1 : $diff->d
+        ];
+
+        if ($diff->d > 3) {
+            return response()->json([
+                'message'   =>  'You can\'t file more than 3 leaves.'
+            ], 401);
+        } else {
+            Leave::find($id)
+                ->update($data);
+
+            return response()->json([
+                'message'   =>  'Updated Leave'
+            ], 200);
+        }
     }
 
     /**
