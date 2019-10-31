@@ -4,6 +4,7 @@ namespace App\Repositories\Overtime;
 
 use App\Overtime;
 use App\Repositories\Base\BaseRepository;
+use Carbon\Carbon;
 
 class OvertimeRepository extends BaseRepository implements IOvertimeRepository
 {
@@ -60,9 +61,10 @@ class OvertimeRepository extends BaseRepository implements IOvertimeRepository
 
     public function filterOvertime($dateFrom, $dateTo, $status)
     {
+        $dt = Carbon::createFromDate($dateTo);
         $overtimes = $this->overtime
                         ->where('status', $status)
-                        ->whereBetween('created_at', [$dateFrom, $dateTo])
+                        ->whereBetween('created_at',[$dateFrom, $dt->addDay()])
                         ->get();
 
         return $overtimes;
