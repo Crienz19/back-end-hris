@@ -115,7 +115,7 @@ class LeaveController extends Controller
 
     private function getLeavesByRole($role)
     {
-        $leaves = Leave::join('users', 'leaves.id', '=', 'users.id')
+        $leaves = Leave::join('users', 'leaves.user_id', '=', 'users.id')
                         ->where('users.role', '=', $role)
                         ->select('leaves.*')
                         ->get();
@@ -125,7 +125,7 @@ class LeaveController extends Controller
 
     private function filterLeaves($role, $date_from, $date_to, $status)
     {
-        $leaves = Leave::join('users', 'leaves.id', '=', 'users.id')
+        $leaves = Leave::join('users', 'leaves.user_id', '=', 'users.id')
                         ->where('users.role', '=', $role)
                         ->where('leaves.final_approval', $status)
                         ->whereBetween('leaves.created_at', [$date_from, $date_to])
