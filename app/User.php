@@ -38,11 +38,6 @@ class User extends Authenticatable implements JWTSubject
         'email_verified_at' => 'datetime',
     ];
 
-    public function employee() 
-    {
-        return $this->hasOne('App\Employee', 'user_id', 'id');
-    }
-
     public function getJWTIdentifier()
     {
         return $this->getKey();
@@ -51,5 +46,44 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    public function employee()
+    {
+        return $this->hasOne('App\Employee', 'user_id', 'id');
+    }
+
+    public function leave()
+    {
+        return $this->hasOne('App\Leave', 'user_id', 'id');
+    }
+
+    public function overtime()
+    {
+        return $this->hasOne('App\Overtime', 'user_id', 'id');
+    }
+
+    public function trip()
+    {
+        return $this->hasOne('App\trip', 'user_id', 'id');
+    }
+
+    public function coe()
+    {
+        return $this->hasOne('App\COE', 'user_id', 'id');
+    }
+
+    public function format()
+    {
+        return [
+            'id'            =>  $this->id,
+            'name'          =>  $this->name,
+            'email'         =>  $this->email,
+            'role'          =>  $this->role,
+            'isActivated'   =>  $this->isActivated,
+            'isFilled'      =>  $this->isFilled,
+            'profile_image' =>  $this->profile_image,
+            'created_at'    =>  $this->created_at->toDayDateTimeString()
+        ];
     }
 }

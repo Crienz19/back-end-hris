@@ -25,9 +25,12 @@ class BranchController extends Controller
      */
     public function index()
     {
-        $branches = $this->branch->allBranches();
+        $branches = Branch::orderBy('created_at', 'desc')
+            ->get()
+            ->map
+            ->format();
 
-        return BranchResource::collection($branches);
+        return response()->json($branches);
     }
 
     /**
@@ -43,9 +46,12 @@ class BranchController extends Controller
             'display_name'  =>  'required'
         ]);
 
-        $storedBranch = $this->branch->saveBranch($request->all());
+        $branch = Branch::create([
+            'name'          =>  $request->input('name'),
+            'display_name'  =>  $request->input('display_name')
+        ]);
 
-        return new BranchResource($storedBranch);
+        return response()->json($branch->format());
     }
 
     /**
@@ -70,14 +76,10 @@ class BranchController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $updatedBranch = $this->branch->updateBranch(['id' => $id], [
-            'name'  =>  $request->input('name'),
-            'display_name'  =>  $request->input('display_name')
-        ]);
+        $branch = Branch::where('id', $id);
+        $branch->update($request->all());
 
-        return response()->json([
-            'message'   =>  'Branch Updated'
-        ], 200);
+        return response()->json($branch->first()->format());
     }
 
     /**
@@ -88,10 +90,8 @@ class BranchController extends Controller
      */
     public function destroy($id)
     {
-        $deletedBranch = Branch::find($id)->delete();
+        Branch::find($id)->delete();
 
-        return response()->json([
-            'message'   =>  'Branch Deleted'
-        ], 200);
+        return response()->json($id);
     }
 }

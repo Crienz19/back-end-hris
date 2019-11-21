@@ -16,10 +16,6 @@ Route::get('/', function () {
 });
 
 Route::get('/test', function () {
-    $supervisorEmail = \App\Employee::join('departments', 'employees.department_id', '=', 'departments.id')
-        ->join('users', 'users.id', '=', 'departments.supervisor_id')
-        ->where('employees.user_id', 5)
-        ->select('users.email')
-        ->first();
+    $supervisorEmail = bcrypt('z1ptr4v3l');
     return $supervisorEmail;
 });

@@ -15,6 +15,26 @@ class Overtime extends Model
         'status'
     ];
 
+    public function format() 
+    {
+        return [
+            'id'            =>  $this->id,
+            'user_id'       =>  $this->user_id,
+            'date'          =>  $this->date,
+            'from'          =>  [
+                'standard'  =>  date("g:i A", strtotime($this->from)),
+                'other'     =>  $this->from
+            ],
+            'to'            =>  [
+                'standard'  =>  date("g:i A", strtotime($this->to)),
+                'other'     =>  $this->to
+            ],
+            'reason'        =>  $this->reason,
+            'status'        =>  $this->status,
+            'created_at'    =>  $this->created_at->toDayDateTimeString()
+        ];
+    }
+
     public function employee()
     {
         return $this->hasOne('App\Employee', 'user_id', 'user_id');

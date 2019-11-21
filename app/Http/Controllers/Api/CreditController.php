@@ -2,22 +2,12 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Resources\Role\RoleResource;
-use App\Repositories\Role\IRoleRepository;
-use App\Role;
-use Illuminate\Http\Request;
+use App\Credit;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 
-class RoleController extends Controller
+class CreditController extends Controller
 {
-    private $role;
-
-    public function __construct(IRoleRepository $roleRepository)
-    {
-        $this->middleware('auth:api');
-        $this->role = $roleRepository;
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -25,12 +15,12 @@ class RoleController extends Controller
      */
     public function index()
     {
-        $role = Role::orderBy('created_at', 'desc')
+        $credits = Credit::orderBy('created_at', 'desc')
             ->get()
             ->map
             ->format();
 
-        return response()->json($role);
+        return response()->json($credits);
     }
 
     /**
@@ -41,12 +31,7 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
-        $role = Role::create([
-            'name'          =>  $request->input('name'),
-            'display_name'  =>  $request->input('display_name')
-        ]);
-
-        return response()->json($role->format());
+        //
     }
 
     /**
@@ -57,9 +42,7 @@ class RoleController extends Controller
      */
     public function show($id)
     {
-        $selectedRole = $this->role->getOneRole(['id' => $id]);
-
-        return new RoleResource($selectedRole);
+        //
     }
 
     /**
@@ -71,10 +54,10 @@ class RoleController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $role = Role::where('id', $id);
-        $role->update($request->all());
+        $credit = Credit::where('user_id', $id);
+        $credit->update($request->except('id'));
 
-        return response()->json($role->first()->format());
+        return response()->json($credit->first()->format());
     }
 
     /**
@@ -85,8 +68,6 @@ class RoleController extends Controller
      */
     public function destroy($id)
     {
-        Role::where('id', $id)->delete();
-
-        return response()->json($id);
+        //
     }
 }

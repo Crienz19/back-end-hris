@@ -14,40 +14,14 @@ class UserController extends Controller
 
     public function index()
     {
-        switch (auth()->user()->role) {
-            case 'superadministrator':
-                $users = User::where('role', '!=', 'superadministrator')
-                             ->where('role', '!=', 'hr')
-                             ->where('role', '!=', 'administrator')
-                             ->get();
-                break;
-            case 'hr':
-                $users = User::where('role', '!=', 'superadministrator')
-                    ->where('role', '!=', 'hr')
-                    ->get();
-                break;
-            case 'administrator':
-                $users = User::where('role', '!=', 'superadministrator')
-                            ->where('role', '!=', 'hr')
-                            ->where('role', '!=', 'administrator')
-                            ->get();
-                break;
-            default:
-                $users = User::where('role', '!=', 'superadministrator')
-                    ->where('role', '!=', 'hr')
-                    ->get();
-                break;
-        }
+        $users = User::orderBy('name', 'asc')
+            ->get()
+            ->map
+            ->format();
 
-        return UserResourceWithEmployeeDetails::collection($users);
+        return response()->json($users);
     }
 
-    public function store(Request $request)
-    {
-        $storedUser = User::create($request->all());
-
-        return new UserResource($storedUser);
-    }
 
     public function show($id)
     {
@@ -58,12 +32,10 @@ class UserController extends Controller
 
     public function update(Request $request, $id)
     {
-        User::find($id)->update($request->all());
+        $user = User::where('id', $id);
+        $user->update($request->all());
 
-
-        return response()->json([
-            'message'   =>  'User Updated!'
-        ], 200);
+        return response()->json($user->first()->format());
     }
 
     public function destroy($id)
@@ -91,5 +63,16 @@ class UserController extends Controller
                 'message'   =>  'Incorrect Password'
             ], 401);
         }
+    }
+
+    public function setToDefault($id) 
+    {
+        User::find($id)->update([
+            'password'  =>  bcrypt('z1ptr4v3l')
+        ]);
+
+        return response()->json([
+            'message'   =>  'Password set to default.'
+        ]);
     }
 }

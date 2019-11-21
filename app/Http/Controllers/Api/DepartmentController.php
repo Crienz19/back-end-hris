@@ -15,6 +15,7 @@ class DepartmentController extends Controller
 
     public function __construct(IDepartmentRepository $departmentRepository)
     {
+        $this->middleware('auth:api');
         $this->department = $departmentRepository;
     }
     /**
@@ -24,9 +25,12 @@ class DepartmentController extends Controller
      */
     public function index()
     {
-        $departments = $this->department->allDepartments();
+        $departments = Department::orderBy('created_at', 'desc')
+            ->get()
+            ->map
+            ->format();
 
-        return DepartmentResource::collection($departments);
+        return response()->json($departments);
     }
 
     /**
@@ -42,9 +46,12 @@ class DepartmentController extends Controller
             'display_name'  =>  'required'
         ]);
 
-        $storedDepartment = $this->department->saveDepartment($request->all());
+        $department = Department::create([
+            'name'          =>  $request->input('name'),
+            'display_name'  =>  $request->input('display_name')
+        ]);
 
-        return new DepartmentResource($storedDepartment);
+        return response()->json($department->format());
     }
 
     /**
@@ -69,16 +76,15 @@ class DepartmentController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $updatedDepartment = $this->department->updateDepartment(['id' => $id], [
-            'id'            =>  $request->input('id'),
-            'name'          =>  $request->input('name'),
-            'display_name'  =>  $request->input('display_name'),
-            'supervisor_id' =>  $request->input('supervisor_id')
+        $request->validate([
+            'name'          =>  ['required'],
+            'display_name'  =>  ['required']
         ]);
 
-        return response()->json([
-            'message'   =>  'Department Update'
-        ], 200);
+        $department = Department::where('id', $id);
+        $department->update($request->all());
+
+        return response()->json($department->first()->format());
     }
 
     /**
@@ -89,10 +95,8 @@ class DepartmentController extends Controller
      */
     public function destroy($id)
     {
-        $deletedDepartment = Department::find($id)->delete();
+        Department::where('id', $id)->delete();
 
-        return response()->json([
-            'message'   =>  'Department Deleted'
-        ], 200);
+        return response()->json($id);
     }
 }

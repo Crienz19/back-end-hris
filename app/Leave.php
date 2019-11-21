@@ -20,10 +20,26 @@ class Leave extends Model
         'final_approval'
     ];
 
-    public function user()
+    public function format()
     {
-        return $this->hasOne('App\User', 'id', 'user_id');
+        return [
+            'id'                    =>  $this->id,
+            'user_id'               =>  $this->user_id,
+            'type'                  =>  $this->type,
+            'pay_type'              =>  $this->pay_type,
+            'from'                  =>  $this->from,
+            'to'                    =>  $this->to,
+            'time_from'             =>  $this->time_from,
+            'time_to'               =>  $this->time_to,
+            'reason'                =>  $this->reason,
+            'count'                 =>  $this->count,
+            'recommending_approval' =>  $this->recommending_approval,
+            'final_approval'        =>  $this->final_approval,
+            'created_at'            =>  $this->created_at->toDayDateTimeString()
+        ];
     }
+
+
 
     public function employee()
     {

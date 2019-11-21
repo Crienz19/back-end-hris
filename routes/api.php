@@ -8,6 +8,7 @@ Route::prefix('auth')->group(function () {
 });
 
 Route::post('/users/changePassword', 'Api\UserController@changePassword')->name('users.changePassword');
+Route::post('/users/setToDefault/{id}', 'Api\UserController@setToDefault')->name('users.setToDefault');
 Route::get('/employees/registered', 'Api\EmployeeController@registeredEmployees')->name('employees.registered');
 Route::post('/employees/photo', 'Api\EmployeeController@updateImage')->name('employees.photo');
 
@@ -17,7 +18,26 @@ Route::apiResources([
     'departments'   =>  'Api\DepartmentController',
     'branches'      =>  'Api\BranchController',
     'roles'         =>  'Api\RoleController',
+    'leaves'        =>  'Api\LeaveController',
+    'overtimes'     =>  'Api\OvertimeController',
+    'trips'         =>  'Api\TripController',
+    'coes'          =>  'Api\COEController',
+    'credits'       =>  'Api\CreditController'
 ]);
+
+Route::post('/leaves/filter', 'Api\LeaveController@filterLeave');
+Route::post('/leaves/{id}/approveRecommendingApproval', 'Api\LeaveController@approveRecommendingApproval');
+Route::post('/leaves/{id}/disapproveRecommendingApproval', 'Api\LeaveController@disapproveRecommendingApproval');
+Route::post('/leaves/{id}/approveFinalApproval', 'Api\LeaveController@approveFinalApproval');
+Route::post('/leaves/{id}/disapproveFinalApproval', 'Api\LeaveController@disapproveFinalApproval');
+
+Route::post('/overtimes/filter', 'Api\OvertimeController@filterOvertime');
+Route::post('/overtimes/{id}/approveOvertime', 'Api\OvertimeController@approveStatus');
+Route::post('/overtimes/{id}/disapproveOvertime', 'Api\OvertimeController@disapproveStatus');
+
+Route::post('/trips/{id}/acknowledgeTrip', 'Api\TripController@acknowledgeTrip');
+
+Route::post('/coes/{id}/acknowledgeCoe', 'Api\COEController@acknowledgeCoe');
 
 Route::prefix('sa')->group(function () {
     Route::apiResources([
