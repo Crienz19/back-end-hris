@@ -82,7 +82,7 @@ class User extends Authenticatable implements JWTSubject
             'role'          =>  $this->role,
             'isActivated'   =>  $this->isActivated,
             'isFilled'      =>  $this->isFilled,
-            'profile_image' =>  $this->profile_image,
+            'profile_image' =>  url('/') .'/images/'. $this->profile_image,
             'created_at'    =>  $this->created_at->toDayDateTimeString()
         ];
     }
