@@ -124,4 +124,15 @@ class TripController extends Controller
 
         return response()->json($trip->first()->format());
     }
+
+    public function filterTrip(Request $request)
+    {
+        $trip = Trip::where('status', $request->input('status'))
+            ->whereBetween('created_at', [$request->input('date_from'), $request->input('date_to')])
+            ->get()
+            ->map
+            ->format();
+
+        return response()->json($trip);
+    }
 }

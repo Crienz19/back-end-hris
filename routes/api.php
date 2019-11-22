@@ -35,6 +35,7 @@ Route::post('/overtimes/filter', 'Api\OvertimeController@filterOvertime');
 Route::post('/overtimes/{id}/approveOvertime', 'Api\OvertimeController@approveStatus');
 Route::post('/overtimes/{id}/disapproveOvertime', 'Api\OvertimeController@disapproveStatus');
 
+Route::post('/trips/filter', 'Api\TripController@filterTrip');
 Route::post('/trips/{id}/acknowledgeTrip', 'Api\TripController@acknowledgeTrip');
 
 Route::post('/coes/{id}/acknowledgeCoe', 'Api\COEController@acknowledgeCoe');
