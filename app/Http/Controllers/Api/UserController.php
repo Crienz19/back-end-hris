@@ -33,7 +33,14 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         $user = User::where('id', $id);
-        $user->update($request->all());
+        $user->update([
+            'name'      =>  $request->has('name') ? $request->input('name') : $user->first()->name,
+            'email'     =>  $request->has('email') ? $request->input('email') : $user->first()->email,
+            'role'      =>  $request->has('role') ? $request->input('role') : $user->first()->role,
+            'isActivated'   =>  $request->has('isActivated') ? $request->input('isActivated') : $user->first()->isActivated,
+            'isFilled'      =>  $request->has('isFilled') ? $request->input('isActivated') : $user->first()->isFilled,
+            'profile_image' =>  $request->has('profile_image') ? $request->input('profile_image') : $user->first()->profile_image,
+        ]);
 
         return response()->json($user->first()->format());
     }

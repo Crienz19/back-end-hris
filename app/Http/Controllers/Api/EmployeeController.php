@@ -44,7 +44,28 @@ class EmployeeController extends Controller
             'isFilled'  =>  1
         ]);
 
-        $storedEmployee = Employee::create($request->all());
+        $storedEmployee = Employee::create([
+            'user_id'           =>  auth()->user()->id,
+            'first_name'        =>  $request->input('first_name'),
+            'middle_name'       =>  $request->input('middle_name'),
+            'last_name'         =>  $request->input('last_name'),
+            'birth_date'        =>  $request->input('birth_date'),
+            'civil_status'      =>  $request->input('civil_status'),
+            'present_address'   =>  $request->input('present_address'),
+            'permanent_address' =>  $request->input('permanent_address'),
+            'contact_no_1'      =>  $request->input('contact_no_1'),
+            'contact_no_2'      =>  $request->input('contact_no_2'),
+            'tin'               =>  $request->input('tin'),
+            'sss'               =>  $request->input('sss'),
+            'pagibig'           =>  $request->input('pagibig'),
+            'philhealth'        =>  $request->input('philhealth'),
+            'employee_id'       =>  $request->input('employee_id'),
+            'date_hired'        =>  $request->input('date_hired'),
+            'branch_id'         =>  $request->input('branch_id'),
+            'skype_id'          =>  $request->input('skype_id'),
+            'department_id'     =>  $request->input('department_id'),
+            'position'          =>  $request->input('position')
+        ]);
 
         return response()->json($storedEmployee->format());
     }
@@ -72,7 +93,28 @@ class EmployeeController extends Controller
     public function update(Request $request, $id)
     {
         $employee = Employee::where('user_id', $id);
-        $employee->update($request->all());
+        $employee->update([
+            'user_id'           =>  auth()->user()->id,
+            'first_name'        =>  $request->input('first_name'),
+            'middle_name'       =>  $request->input('middle_name'),
+            'last_name'         =>  $request->input('last_name'),
+            'birth_date'        =>  $request->input('birth_date'),
+            'civil_status'      =>  $request->input('civil_status'),
+            'present_address'   =>  $request->input('present_address'),
+            'permanent_address' =>  $request->input('permanent_address'),
+            'contact_no_1'      =>  $request->input('contact_no_1'),
+            'contact_no_2'      =>  $request->input('contact_no_2'),
+            'tin'               =>  $request->input('tin'),
+            'sss'               =>  $request->input('sss'),
+            'pagibig'           =>  $request->input('pagibig'),
+            'philhealth'        =>  $request->input('philhealth'),
+            'employee_id'       =>  $request->input('employee_id'),
+            'date_hired'        =>  $request->input('date_hired'),
+            'branch_id'         =>  $request->input('branch_id'),
+            'skype_id'          =>  $request->input('skype_id'),
+            'department_id'     =>  $request->input('department_id'),
+            'position'          =>  $request->input('position')
+        ]);
 
         return response()->json($employee->first()->format());
     }

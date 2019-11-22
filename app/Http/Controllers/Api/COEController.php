@@ -74,7 +74,11 @@ class COEController extends Controller
         ]);
 
         $coe = COE::where('id', $id);
-        $coe->update($request->all());
+        $coe->update([
+            'date_needed'   =>  $request->has('date_needed') ? $request->input('date_needed') : $coe->first()->date_needed,
+            'reason'        =>  $request->has('reason') ? $request->input('reason') : $coe->first()->reason,
+            'compensation'  =>  $request->has('compensation') ? $request->input('compensation') : $coe->first()->compensation
+        ]);
 
         return response()->json($coe->first()->format());
     }

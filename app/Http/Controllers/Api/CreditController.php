@@ -55,7 +55,14 @@ class CreditController extends Controller
     public function update(Request $request, $id)
     {
         $credit = Credit::where('user_id', $id);
-        $credit->update($request->except('id'));
+        $credit->update([
+            'VL'        =>  $request->input('VL'),
+            'SL'        =>  $request->input('SL'),
+            'PTO'       =>  $request->input('PTO'),
+            'total_PTO' =>  $request->input('total_PTO'),
+            'total_SL'  =>  $request->input('total_SL'),
+            'total_VL'  =>  $request->input('total_VL')
+        ]);
 
         return response()->json($credit->first()->format());
     }

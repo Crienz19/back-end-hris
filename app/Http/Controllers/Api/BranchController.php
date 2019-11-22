@@ -77,7 +77,10 @@ class BranchController extends Controller
     public function update(Request $request, $id)
     {
         $branch = Branch::where('id', $id);
-        $branch->update($request->all());
+        $branch->update([
+            'name'          =>  $request->has('name') ? $request->input('name') : $branch->first()->name,
+            'display_name'  =>  $request->has('display_name') ? $request->input('name') : $branch->first()->display_name
+        ]);
 
         return response()->json($branch->first()->format());
     }

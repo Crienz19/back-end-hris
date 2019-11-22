@@ -56,7 +56,8 @@ class OvertimeController extends Controller
             ->first()
             ->email;
 
-        $leave = $this->saveOvertimeRequest(['date'      =>  $request->input('date'),
+        $leave = $this->saveOvertimeRequest([
+            'date'      =>  $request->input('date'),
             'from'      =>  $request->input('from'),
             'to'        =>  $request->input('to'),
             'reason'    =>  $request->input('reason'),
@@ -88,7 +89,13 @@ class OvertimeController extends Controller
      */
     public function update(Request $request, $id)
     {
-        return response()->json($this->updateOvertimeRequest($request->all(), $id)->format());
+        return response()->json($this->updateOvertimeRequest([
+            'date'      =>  $request->input('date'),
+            'from'      =>  $request->input('from'),
+            'to'        =>  $request->input('to'),
+            'reason'    =>  $request->input('reason'),
+            'status'    =>  'Pending'
+        ], $id)->format());
     }
 
     /**

@@ -82,7 +82,10 @@ class DepartmentController extends Controller
         ]);
 
         $department = Department::where('id', $id);
-        $department->update($request->all());
+        $department->update([
+            'name'      =>  $request->has('name') ? $request->input('name') : $department->first()->name,
+            'display_name'  =>  $request->has('display_name') ? $request->input('display_name') : $department->first()->display_name
+        ]);
 
         return response()->json($department->first()->format());
     }
