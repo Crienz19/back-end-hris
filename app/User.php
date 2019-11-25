@@ -65,7 +65,7 @@ class User extends Authenticatable implements JWTSubject
 
     public function trip()
     {
-        return $this->hasOne('App\trip', 'user_id', 'id');
+        return $this->hasOne('App\Trip', 'user_id', 'id');
     }
 
     public function coe()
