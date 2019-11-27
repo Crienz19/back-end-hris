@@ -76,15 +76,11 @@ class DepartmentController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'name'          =>  ['required'],
-            'display_name'  =>  ['required']
-        ]);
-
         $department = Department::where('id', $id);
         $department->update([
             'name'      =>  $request->has('name') ? $request->input('name') : $department->first()->name,
-            'display_name'  =>  $request->has('display_name') ? $request->input('display_name') : $department->first()->display_name
+            'display_name'  =>  $request->has('display_name') ? $request->input('display_name') : $department->first()->display_name,
+            'supervisor_id' =>  $request->has('supervisor_id') ? $request->input('supervisor_id') : $department->first()->supervisor_id
         ]);
 
         return response()->json($department->first()->format());
