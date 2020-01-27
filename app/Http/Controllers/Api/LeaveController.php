@@ -272,7 +272,7 @@ class LeaveController extends Controller
 
                 case 'PTO-Half':
                     $credit->update([
-                        'PTO'   =>  $credit->first()->PTO - 0.50
+                        'PTO'   =>  $credit->first()->PTO - 0.5
                     ]);
                     break;
             }
