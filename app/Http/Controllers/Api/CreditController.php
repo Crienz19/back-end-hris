@@ -56,12 +56,14 @@ class CreditController extends Controller
     {
         $credit = Credit::where('user_id', $id);
         $credit->update([
-            'VL'        =>  $request->input('VL'),
-            'SL'        =>  $request->input('SL'),
-            'PTO'       =>  $request->input('PTO'),
-            'total_PTO' =>  $request->input('total_PTO'),
-            'total_SL'  =>  $request->input('total_SL'),
-            'total_VL'  =>  $request->input('total_VL')
+            'VL'                    =>  $request->input('VL'),
+            'SL'                    =>  $request->input('SL'),
+            'PTO'                   =>  $request->input('PTO'),
+            'special_leave'         =>  $request->input('special_total'),
+            'total_PTO'             =>  $request->input('total_PTO'),
+            'total_SL'              =>  $request->input('total_SL'),
+            'total_VL'              =>  $request->input('total_VL'),
+            'total_special_leave'   =>  $request->input('total_special_leave')
         ]);
 
         return response()->json($credit->first()->format());
