@@ -13,9 +13,11 @@ class Credit extends Model
         'OT',
         'OB',
         'PTO',
+        'special_leave',
         'total_VL',
         'total_SL',
-        'total_PTO'
+        'total_PTO',
+        'total_special_leave'
     ];
 
     public function format()
