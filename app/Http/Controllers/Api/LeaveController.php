@@ -57,7 +57,7 @@ class LeaveController extends Controller
             'time_from' =>  $request->input('time_from'),
             'time_to'   =>  $request->input('time_to'),
             'reason'    =>  $request->input('reason'),
-            'count'     =>  ($request->input('from') == $request->input('to')) ? 1 : $diff->d,
+            'count'     =>  $diff->d == 0 ? 1 : $diff->d,
             'recommending_approval'     =>  (auth()->user()->role == 'supervisor') ? 'Approved' : 'Pending',
             'final_approval'            =>  'Pending'
         ];
@@ -148,7 +148,7 @@ class LeaveController extends Controller
                         ], 401);
                     }
                     break;
-                    
+
                 case 'Special':
                     if ($credit->special_leave > 0) {
                         $this->leave->saveLeave($data);
@@ -212,7 +212,7 @@ class LeaveController extends Controller
             'time_from' =>  $request->input('time_from'),
             'time_to'   =>  $request->input('time_to'),
             'reason'    =>  $request->input('reason'),
-            'count'     =>  ($request->input('from') == $request->input('to')) ? 1 : $diff->d
+            'count'     =>  $diff->d == 0 ? 1 : $diff->d
         ];
 
         return response()->json($this->updateUserLeaveRequest($data, $id)->format());
@@ -295,6 +295,18 @@ class LeaveController extends Controller
                 case 'PTO-Half':
                     $credit->update([
                         'PTO'   =>  $credit->first()->PTO - 0.5
+                    ]);
+                    break;
+
+                case 'Special':
+                    $credit->update([
+                        'special_leave' =>  $credit->first()->special_leave - $leave->first()->count
+                    ]);
+                    break;
+
+                case 'Special - Half':
+                    $credit->update([
+                        'special_leave' =>  $credit->first()->special_leave - 0.5
                     ]);
                     break;
             }
