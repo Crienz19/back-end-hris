@@ -59,7 +59,7 @@ class CreditController extends Controller
             'VL'                    =>  $request->input('VL'),
             'SL'                    =>  $request->input('SL'),
             'PTO'                   =>  $request->input('PTO'),
-            'special_leave'         =>  $request->input('special_total'),
+            'special_leave'         =>  $request->input('special_leave'),
             'total_PTO'             =>  $request->input('total_PTO'),
             'total_SL'              =>  $request->input('total_SL'),
             'total_VL'              =>  $request->input('total_VL'),
