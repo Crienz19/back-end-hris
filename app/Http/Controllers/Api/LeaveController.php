@@ -151,8 +151,10 @@ class LeaveController extends Controller
 
                 case 'Special':
                     if ($credit->special_leave > 0) {
-                        $this->leave->saveLeave($data);
+                        $leave = $this->saveUserLeaveRequest($data);
                         Notification::route('mail', $supervisorEmail)->notify(new LeaveEmToSupNotification($data));
+
+                        return response()->json($leave);
                     } else {
                         return response()->json([
                             'message'   =>  'You don\'t have Special Leave(s)'
@@ -162,8 +164,10 @@ class LeaveController extends Controller
 
                 case 'Special - Half':
                     if ($credit->special_leave > 0) {
-                        $this->leave->saveLeave($data);
+                        $leave = $this->saveUserLeaveRequest($data);
                         Notification::route('mail', $supervisorEmail)->notify(new LeaveEmToSupNotification($data));
+                        
+                        return response()->json($leave);
                     } else {
                         return response()->json([
                             'message'   =>  'You don\'t have Special Leave(s)'
