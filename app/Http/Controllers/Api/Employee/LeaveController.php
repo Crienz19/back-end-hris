@@ -208,7 +208,7 @@ class LeaveController extends Controller
             'time_from' =>  $request->input('time_from'),
             'time_to'   =>  $request->input('time_to'),
             'reason'    =>  $request->input('reason'),
-            'count'     =>  ($request->input('from') == $request->input('to')) ? 1 : $diff->d
+            'count'     =>  $diff->d == 0 ? 1 : $diff->d
         ];
 
         $updatedLeave = $this->leave->updateLeave(['id' => $id], $data);
