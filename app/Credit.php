@@ -27,9 +27,11 @@ class Credit extends Model
             'SL'            =>  $this->SL,
             'OT'            =>  $this->OT,
             'PTO'           =>  $this->PTO,
+            'special_leave' =>  $this->special_leave,
             'total_VL'      =>  $this->total_VL,
             'total_SL'      =>  $this->total_SL,
-            'total_PTO'     =>  $this->total_PTO
+            'total_PTO'     =>  $this->total_PTO,
+            'total_special' =>  $this->total_special_leave
         ];
     }
 }
