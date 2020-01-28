@@ -140,7 +140,28 @@ class LeaveController extends Controller
                         ], 401);
                     }
                     break;
+                
+                case 'Special':
+                    if ($credit->special_leave > 0) {
+                        $this->leave->saveLeave($data);
+                        Notification::route('mail', $supervisorEmail)->notify(new LeaveEmToSupNotification($data));
+                    } else {
+                        return response()->json([
+                            'message'   =>  'You don\'t have Special Leave(s)'
+                        ], 401);
+                    }
+                    break;
 
+                case 'Special - Half':
+                    if ($credit->special_leave > 0) {
+                        $this->leave->saveLeave($data);
+                        Notification::route('mail', $supervisorEmail)->notify(new LeaveEmToSupNotification($data));
+                    } else {
+                        return response()->json([
+                            'message'   =>  'You don\'t have Special Leave(s)'
+                        ], 401);
+                    }
+                    break;
             }
         } else {
             $this->leave->saveLeave($data);

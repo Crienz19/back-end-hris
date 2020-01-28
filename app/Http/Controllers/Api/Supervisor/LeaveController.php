@@ -122,6 +122,21 @@ class LeaveController extends Controller
                         ], 401);
                     }
                     break;
+                case 'Special':
+                    if ($credit->special_leave > 0) {
+                        $this->leave->saveLeave($data);
+
+                        if ($diff->d > 1) {
+                            return response()->json([
+                                'message'   =>  'Your request has been sent and is waiting to approval. Make sure to inform the Management of you leave request.'
+                            ], 200);
+                        } else {
+                            return response()->json([
+                                'message'   =>  'You don\'t have Special Leave(s)'
+                            ], 401);
+                        }
+                    }
+                    break;
                 case 'VL - Half':
                     if ($credit->VL > 0) {
                         $this->leave->saveLeave($data);
@@ -151,7 +166,16 @@ class LeaveController extends Controller
                         ], 401);
                     }
                     break;
-
+                
+                case 'Special - Half':
+                    if ($credit->special_leave > 0) {
+                        $this->leave->saveLeave($data);
+                    } else {
+                        return response()->json([
+                            'message'   =>  'You don\'t have Special Leave(s)'
+                        ], 401);
+                    }
+                    break;
             }
         } else {
             $this->leave->saveLeave($data);
