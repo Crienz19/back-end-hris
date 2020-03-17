@@ -274,7 +274,7 @@ class LeaveController extends Controller
 
                 case 'VL-Half':
                     $credit->update([
-                        'VL'    =>  $credit->first()->VL - 0.5
+                        'VL'    =>  ($credit->first()->VL) - 0.5
                     ]);
                     break;
 
@@ -286,7 +286,7 @@ class LeaveController extends Controller
 
                 case 'SL-Half':
                     $credit->update([
-                        'SL'    =>  $credit->first()->SL - 0.5
+                        'SL'    =>  ($credit->first()->SL) - 0.5
                     ]);
                     break;
 
@@ -298,7 +298,7 @@ class LeaveController extends Controller
 
                 case 'PTO-Half':
                     $credit->update([
-                        'PTO'   =>  $credit->first()->PTO - 0.5
+                        'PTO'   =>  ($credit->first()->PTO) - 0.5
                     ]);
                     break;
 
@@ -310,7 +310,7 @@ class LeaveController extends Controller
 
                 case 'Special - Half':
                     $credit->update([
-                        'special_leave' =>  $credit->first()->special_leave - 0.5
+                        'special_leave' =>  ($credit->first()->special_leave) - 0.5
                     ]);
                     break;
             }
