@@ -57,7 +57,7 @@ class LeaveController extends Controller
             'time_from' =>  $request->input('time_from'),
             'time_to'   =>  $request->input('time_to'),
             'reason'    =>  $request->input('reason'),
-            'count'     =>  $diff->d == 0 ? 1 : $diff->d,
+            'count'     =>  $diff->d == 0 ? 1 : ($diff->d) + 1,
             'recommending_approval'     =>  (auth()->user()->role == 'supervisor') ? 'Approved' : 'Pending',
             'final_approval'            =>  'Pending'
         ];
@@ -216,7 +216,7 @@ class LeaveController extends Controller
             'time_from' =>  $request->input('time_from'),
             'time_to'   =>  $request->input('time_to'),
             'reason'    =>  $request->input('reason'),
-            'count'     =>  $diff->d == 0 ? 1 : $diff->d
+            'count'     =>  $diff->d == 0 ? 1 : ($diff->d) + 1
         ];
 
         return response()->json($this->updateUserLeaveRequest($data, $id)->format());
