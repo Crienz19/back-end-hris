@@ -55,7 +55,7 @@ class LeaveController extends Controller
             'time_from' =>  $request->input('time_from'),
             'time_to'   =>  $request->input('time_to'),
             'reason'    =>  $request->input('reason'),
-            'count'     =>  $diff->d == 0 ? 1 : $diff->d
+            'count'     =>  $diff->d == 0 ? 1 : $diff->d + 1
         ];
 
         $credit = Credit::where('user_id', auth()->user()->id)->first();
