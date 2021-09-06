@@ -82,15 +82,15 @@ class LeaveController extends Controller
                     $this->credit->updatePersonalTimeOff($leave->user_id, $leave->count);
                     break;
 
-                case 'VL-Half':
+                case 'VL - Half':
                     $this->credit->updateVacationLeave($leave->user_id, 0.5);
                     break;
 
-                case 'SL-Half':
+                case 'SL - Half':
                     $this->credit->updateSickLeave($leave->user_id, 0.5);
                     break;
 
-                case 'PTO-Half':
+                case 'PTO - Half':
                     $this->credit->updatePersonalTimeOff($leave->user_id, 0.5);
                     break;
             }
