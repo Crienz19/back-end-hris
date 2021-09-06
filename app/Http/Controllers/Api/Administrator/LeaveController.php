@@ -59,17 +59,17 @@ class LeaveController extends Controller
                     'PTO'   =>  $credit->first()->PTO - $leave->count
                 ]);
                 break;
-            case 'VL-Half':
+            case 'VL - Half':
                 $credit->update([
                     'VL'    =>  $credit->first()->VL - 0.5
                 ]);
                 break;
-            case 'SL-Half':
+            case 'SL - Half':
                 $credit->update([
                     'SL'    =>  $credit->first()->SL - 0.5
                 ]);
                 break;
-            case 'PTO-Half':
+            case 'PTO - Half':
                 $credit->update([
                     'PTO'   =>  $credit->first()->PTO - 0.5
                 ]);
