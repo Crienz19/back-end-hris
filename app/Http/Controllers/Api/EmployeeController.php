@@ -12,11 +12,6 @@ use Illuminate\Support\Facades\File;
 
 class EmployeeController extends Controller
 {
-    private $user;
-    public function __construct()
-    {
-        $this->middleware('auth:api');
-    }
     /**
      * Display a listing of the resource.
      *
@@ -40,6 +35,26 @@ class EmployeeController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'first_name'        =>  'required',
+            'last_name'         =>  'required',
+            'birth_date'        =>  'required',
+            'civil_status'      =>  'required',
+            'present_address'   =>  'required',
+            'permanent_address' =>  'required',
+            'contact_no_1'      =>  'required',
+            'tin'               =>  'required',
+            'sss'               =>  'required',
+            'pagibig'           =>  'required',
+            'philhealth'        =>  'required',
+            'employee_id'       =>  'required',
+            'date_hired'        =>  'required',
+            'branch_id'         =>  'required',
+            'skype_id'          =>  'required',
+            'department_id'     =>  'required',
+            'position'          =>  'required'
+        ]);
+
         User::find(auth()->user()->id)->update([
             'isFilled'  =>  1
         ]);

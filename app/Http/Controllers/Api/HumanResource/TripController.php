@@ -16,7 +16,6 @@ class TripController extends Controller
     private $trip;
     public function __construct(ITripRepository $tripRepository)
     {
-        $this->middleware('auth:api');
         $this->trip = $tripRepository;
     }
 
@@ -91,9 +90,7 @@ class TripController extends Controller
 
         Notification::route('mail', User::find($trip->user_id)->email)->notify(new TripApproveNotification());
 
-        return response()->json([
-            'message'   =>  'Trip Acknowledged!'
-        ], 200);
+        return new TripResourceWithEmployeeAndActions($trip->first());
     }
 
     public function filterTrip(Request $request)

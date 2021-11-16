@@ -13,7 +13,6 @@ class OvertimeController extends Controller
     private $overtime;
     public function __construct(IOvertimeRepository $overtimeRepository)
     {
-        $this->middleware('auth:api');
         $this->overtime = $overtimeRepository;
     }
 

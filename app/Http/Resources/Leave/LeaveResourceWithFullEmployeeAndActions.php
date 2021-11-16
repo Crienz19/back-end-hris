@@ -27,7 +27,7 @@ class LeaveResourceWithFullEmployeeAndActions extends JsonResource
             'count'                 =>  $this->count,
             'recommending_approval' =>  $this->recommending_approval,
             'final_approval'        =>  $this->final_approval,
-            'created_at'            =>  $this->created_at,
+            'created_at'            =>  $this->created_at->toDateTimeString(),
             'employee'              =>  new EmployeeResourceWithCompleteDetails($this->employee),
             'actions'               =>  [
                 'approve'      =>  route('admin.leaves.supervisor.approve', $this->id),

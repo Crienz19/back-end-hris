@@ -30,7 +30,7 @@ class OvertimeResourceWithEmployeeAndActions extends JsonResource
             'reason'    =>  $this->reason,
             'status'    =>  $this->status,
             'employee'  =>  new EmployeeResourceWithCompleteDetails($this->employee),
-            'created_at'=>  $this->created_at,
+            'created_at'=>  $this->created_at->toDateTimeString(),
             'actions'   =>  [
                 'approve'       =>  route('hr.overtimes.approve', $this->id),
                 'disapprove'    =>  route('hr.overtimes.disapprove', $this->id)

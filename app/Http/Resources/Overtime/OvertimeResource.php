@@ -14,6 +14,21 @@ class OvertimeResource extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return [
+            'id'            =>  $this->id,
+            'user_id'       =>  $this->user_id,
+            'date'          =>  $this->date,
+            'from'          =>  [
+                'standard'  =>  date("g:i A", strtotime($this->from)),
+                'other'     =>  $this->from
+            ],
+            'to'            =>  [
+                'standard'  =>  date("g:i A", strtotime($this->to)),
+                'other'     =>  $this->to
+            ],
+            'reason'        =>  $this->reason,
+            'status'        =>  $this->status,
+            'created_at'    =>  $this->created_at->toDayDateTimeString()
+        ];
     }
 }

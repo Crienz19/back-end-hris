@@ -14,7 +14,6 @@ class TripController extends Controller
     private $trip;
     public function __construct(ITripRepository $tripRepository)
     {
-        $this->middleware('auth:api');
         $this->trip = $tripRepository;
     }
 
@@ -48,11 +47,18 @@ class TripController extends Controller
 
     public function update(Request $request, $id)
     {
-        $updatedTrip = $this->trip->updateTrip(['id' => $id], $request->all());
+        $updatedTrip = $this->trip->updateTrip(['id' => $id], [
+            'date_from'             =>  $request->input('date_from'),
+            'date_to'               =>  $request->input('date_to'),
+            'time_in'               =>  $request->input('time_in')['other'],
+            'time_out'              =>  $request->input('time_out')['other'],
+            'destination_from'      =>  $request->input('destination_from'),
+            'destination_to'        =>  $request->input('destination_to'),
+            'purpose'               =>  $request->input('purpose'),
+            'status'                =>  $request->input('status')
+        ]);
 
-        return response()->json([
-            'message'   =>  'Trip Updated'
-        ], 200);
+        return new TripResourceWithEmployeeDetails($this->trip->getOneTrip(['id' => $id]));
     }
 
     public function destroy($id)

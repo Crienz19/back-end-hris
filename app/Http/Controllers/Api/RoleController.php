@@ -14,7 +14,6 @@ class RoleController extends Controller
 
     public function __construct(IRoleRepository $roleRepository)
     {
-        $this->middleware('auth:api');
         $this->role = $roleRepository;
     }
 
@@ -41,6 +40,11 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'name'          =>  'required',
+            'display_name'  =>  'required'
+        ]);
+
         $role = Role::create([
             'name'          =>  $request->input('name'),
             'display_name'  =>  $request->input('display_name')
@@ -71,6 +75,11 @@ class RoleController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $request->validate([
+            'name'          =>  'required',
+            'display_name'  =>  'required'
+        ]);
+
         $role = Role::where('id', $id);
         $role->update([
             'name'          =>  $request->has('name') ? $request->input('name') : $role->first()->name,

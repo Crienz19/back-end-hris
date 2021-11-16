@@ -31,7 +31,7 @@ class TripResourceWithEmployeeAndActions extends JsonResource
             'destination_to'    =>  $this->destination_to,
             'purpose'           =>  $this->purpose,
             'status'            =>  $this->status,
-            'created_at'        =>  $this->created_at,
+            'created_at'        =>  $this->created_at->toDateTimeString(),
             'employee'          =>  new EmployeeResource($this->employee),
             'actions'           =>  [
                 'acknowledge'   =>  route('hr.trips.acknowledge', $this->id)

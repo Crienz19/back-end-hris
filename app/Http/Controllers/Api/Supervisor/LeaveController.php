@@ -23,7 +23,6 @@ class LeaveController extends Controller
 
     public function __construct(ILeaveRepository $leaveRepository)
     {
-        $this->middleware('auth:api');
         $this->leave = $leaveRepository;
     }
 
@@ -283,9 +282,7 @@ class LeaveController extends Controller
         $leave = $this->leave->getOneLeave(['id' => $id]);
 
         Notification::route('mail', User::find($leave->user_id)->email)->notify(new LeaveApproveNotification());
-        return response()->json([
-            'message'   =>  'Leave Approved!'
-        ], 200);
+        return new LeaveResourceWithEmployeeAndActionsForSup($leave);
     }
 
     public function disapprove($id)
@@ -294,8 +291,6 @@ class LeaveController extends Controller
         $leave = $this->leave->getOneLeave(['id' => $id]);
 
         Notification::route('mail', User::find($leave->user_id)->email)->notify(new LeaveDisapprovedNotification());
-        return response()->json([
-            'message'   =>  'Leave Disapproved!'
-        ], 200);
+        return new LeaveResourceWithEmployeeAndActionsForSup($leave);
     }
 }

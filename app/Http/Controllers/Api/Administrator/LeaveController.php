@@ -19,11 +19,6 @@ use Illuminate\Support\Facades\Notification;
 
 class LeaveController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth:api');
-    }
-
     public function getEmployeeLeave()
     {
         $leaves = $this->getLeavesByRole('employee');
@@ -82,9 +77,7 @@ class LeaveController extends Controller
 
         Notification::route('mail', User::find($leave->user_id)->email)->notify(new LeaveApproveNotification());
 
-        return response()->json([
-            'message'   =>  'Leave Approved By Administrator'
-        ]);
+        return new LeaveResourceWithFullEmployeeAndActions(Leave::where('id', $id)->first());
     }
 
     public function disapproveSupervisorLeave($id)

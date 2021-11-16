@@ -22,7 +22,6 @@ class OvertimeController extends Controller
     private $overtime;
     public function __construct(IOvertimeRepository $overtimeRepository)
     {
-        $this->middleware('auth:api');
         $this->overtime = $overtimeRepository;
     }
 
@@ -118,9 +117,7 @@ class OvertimeController extends Controller
 
         Notification::route('mail', User::find($overtime->user_id)->email)->notify(new OvertimeApproveNotification());
 
-        return response()->json([
-            'message'   =>  'Overtime Approved'
-        ], 200);
+        return new OvertimeResourceWithEmployeeAndActionsForSup($overtime);
     }
 
     public function disapprove($id)
@@ -131,8 +128,6 @@ class OvertimeController extends Controller
 
         Notification::route('mail', User::find($overtime->user_id)->email)->notify(new OvertimeDisapproveNotification());
 
-        return response()->json([
-            'message'   =>  'Overtime Disapproved'
-        ], 200);
+        return new OvertimeResourceWithEmployeeAndActionsForSup($overtime);
     }
 }

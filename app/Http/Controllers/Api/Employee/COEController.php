@@ -30,14 +30,13 @@ class COEController extends Controller
             'user_id'       =>  auth()->user()->id,
             'date_needed'   =>  $request->input('date_needed'),
             'reason'        =>  $request->input('reason'),
-            'compensation'  =>  $request->input('compensation')
+            'compensation'  =>  $request->input('compensation'),
+            'status'        =>  'Pending'
         ]);
 
         Notification::route('mail', 'rmergenio@ziptravel.com.ph')->notify(new COEEmToHrNotification($storedCOE));
 
-        return response()->json([
-            'message'   =>  'COE submitted!'
-        ], 200);
+        return new COEResource($storedCOE);
     }
 
     public function show($id)

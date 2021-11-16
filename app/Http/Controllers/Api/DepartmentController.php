@@ -15,7 +15,6 @@ class DepartmentController extends Controller
 
     public function __construct(IDepartmentRepository $departmentRepository)
     {
-        $this->middleware('auth:api');
         $this->department = $departmentRepository;
     }
     /**
@@ -26,9 +25,8 @@ class DepartmentController extends Controller
     public function index()
     {
         $departments = Department::orderBy('created_at', 'desc')
-            ->get()
-            ->map
-            ->format();
+            ->with('employee')
+            ->get();
 
         return response()->json($departments);
     }
@@ -43,12 +41,14 @@ class DepartmentController extends Controller
     {
         $request->validate([
             'name'          =>  'required',
-            'display_name'  =>  'required'
+            'display_name'  =>  'required',
+            'supervisor_id' =>  'required'
         ]);
 
         $department = Department::create([
             'name'          =>  $request->input('name'),
-            'display_name'  =>  $request->input('display_name')
+            'display_name'  =>  $request->input('display_name'),
+            'supervisor_id' =>  $request->input('supervisor_id')
         ]);
 
         return response()->json($department->format());

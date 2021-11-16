@@ -14,11 +14,6 @@ use Illuminate\Support\Facades\Notification;
 
 class OvertimeController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth:api');
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -128,7 +123,7 @@ class OvertimeController extends Controller
 
         Notification::route('mail', User::find($overtime->first()->user_id)->email)->notify(new OvertimeApproveNotification());
 
-        return response()->json($overtime->first()->format());
+        return response()->json($overtime->first()->adminFormat());
     }
 
     public function disapproveStatus($id)
@@ -140,7 +135,7 @@ class OvertimeController extends Controller
 
         Notification::route('mail', User::find($overtime->first()->user_id)->email)->notify(new OvertimeDisapproveNotification());
 
-        return response()->json($overtime->first()->format());
+        return response()->json($overtime->first()->adminFormat());
     }
 
     public function filterOvertime(Request $request)

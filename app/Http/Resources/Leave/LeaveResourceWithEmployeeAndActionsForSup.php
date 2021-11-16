@@ -27,7 +27,7 @@ class LeaveResourceWithEmployeeAndActionsForSup extends JsonResource
             'count'                 =>  $this->count,
             'recommending_approval' =>  $this->recommending_approval,
             'final_approval'        =>  $this->final_approval,
-            'created_at'            =>  $this->created_at,
+            'created_at'            =>  $this->created_at->toDateTimeString(),
             'employee'              =>  new EmployeeResource($this->employee),
             'actions'               =>  [
                 'approve'      =>  route('sv.leaves.approve', $this->id),

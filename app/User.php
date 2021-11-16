@@ -2,14 +2,14 @@
 
 namespace App;
 
-use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable implements JWTSubject
+class User extends Authenticatable
 {
-    use Notifiable;
+    use Notifiable, HasApiTokens;
 
     /**
      * The attributes that are mass assignable.
@@ -38,16 +38,6 @@ class User extends Authenticatable implements JWTSubject
         'email_verified_at' => 'datetime',
     ];
 
-    public function getJWTIdentifier()
-    {
-        return $this->getKey();
-    }
-
-    public function getJWTCustomClaims()
-    {
-        return [];
-    }
-
     public function employee()
     {
         return $this->hasOne('App\Employee', 'user_id', 'id');
@@ -73,6 +63,11 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasOne('App\COE', 'user_id', 'id');
     }
 
+    public function credit()
+    {
+        return $this->hasOne('App\Credit', 'user_id', 'id');
+    }
+
     public function format()
     {
         return [
@@ -83,7 +78,26 @@ class User extends Authenticatable implements JWTSubject
             'isActivated'   =>  $this->isActivated,
             'isFilled'      =>  $this->isFilled,
             'profile_image' =>  url('/') .'/images/'. $this->profile_image,
-            'created_at'    =>  $this->created_at->toDayDateTimeString()
+            'created_at'    =>  $this->created_at->toDayDateTimeString(),
+            'credits'       =>  $this->credit,
+            'employee'      =>  $this->employee()
+                ->with('branch')
+                ->with('department')
+                ->first()
+        ];
+    }
+
+    public function baseFormat()
+    {
+        return [
+            'id'            =>  $this->id,
+            'name'          =>  $this->name,
+            'email'         =>  $this->email,
+            'role'          =>  $this->role,
+            'isActivated'   =>  $this->isActivated,
+            'isFilled'      =>  $this->isFilled,
+            'profile_image' =>  url('/') .'/images/'. $this->profile_image,
+            'created_at'    =>  $this->created_at->toDayDateTimeString(),
         ];
     }
 }

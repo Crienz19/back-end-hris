@@ -24,7 +24,6 @@ class LeaveController extends Controller
 
     public function __construct(IUserRepository $userRepository, ILeaveRepository $leaveRepository, ICreditRepository $creditRepository)
     {
-        $this->middleware('auth:api');
         $this->leave = $leaveRepository;
         $this->credit = $creditRepository;
         $this->user = $userRepository;
@@ -65,8 +64,8 @@ class LeaveController extends Controller
 
     public function approve($id)
     {
-        $leave = $this->leave->getLeaveById($id);
         $this->leave->approveFinalApproval($id);
+        $leave = $this->leave->getLeaveById($id);
 
         if ($leave['pay_type'] == 'With Pay') {
             switch ($leave->type) {
@@ -98,21 +97,17 @@ class LeaveController extends Controller
 
         Notification::route('mail', User::find($leave->user_id)->email)->notify(new LeaveApproveNotification());
 
-        return response()->json([
-            'message'   =>  'VL Approved!'
-        ], 200);
+        return new LeaveResourceWithEmployeeAndActions($leave);
     }
 
     public function disapprove($id)
     {
-        $leave = $this->leave->getLeaveById($id);
         $this->leave->disapproveFinalApproval($id);
+        $leave = $this->leave->getLeaveById($id);
 
         Notification::route('mail', User::find($leave->user_id)->email)->notify(new LeaveDisapproveNotification());
 
-        return response()->json([
-            'message'   =>  'VL Disapproved!'
-        ], 200);
+        return new LeaveResourceWithEmployeeAndActions($leave);
     }
 
     public function filterLeave(Request $request)

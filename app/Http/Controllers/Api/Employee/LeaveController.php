@@ -3,14 +3,13 @@
 namespace App\Http\Controllers\Api\Employee;
 
 use App\Credit;
-use App\Employee;
 use App\Http\Resources\Leave\LeaveResourceWithUpdateDelete;
 use App\Notifications\Employee\LeaveEmToSupNotification;
 use App\Repositories\Leave\ILeaveRepository;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Leave;
 use App\Http\Resources\Leave\LeaveResource;
+use App\Leave;
 use Illuminate\Support\Facades\Notification;
 
 class LeaveController extends Controller
@@ -18,7 +17,6 @@ class LeaveController extends Controller
     private $leave;
     public function __construct(ILeaveRepository $leaveRepository)
     {
-        $this->middleware('auth:api');
         $this->leave = $leaveRepository;
     }
 
@@ -47,15 +45,17 @@ class LeaveController extends Controller
         $diff = $dt1->diff($dt2);
 
         $data = [
-            'user_id'   =>  auth()->user()->id,
-            'type'      =>  $request->input('type'),
-            'pay_type'  =>  $request->input('pay_type'),
-            'from'      =>  $request->input('from'),
-            'to'        =>  $request->input('to'),
-            'time_from' =>  $request->input('time_from'),
-            'time_to'   =>  $request->input('time_to'),
-            'reason'    =>  $request->input('reason'),
-            'count'     =>  $diff->d == 0 ? 1 : $diff->d
+            'user_id'               =>  auth()->user()->id,
+            'type'                  =>  $request->input('type'),
+            'pay_type'              =>  $request->input('pay_type'),
+            'from'                  =>  $request->input('from'),
+            'to'                    =>  $request->input('to'),
+            'time_from'             =>  $request->input('time_from'),
+            'time_to'               =>  $request->input('time_to'),
+            'reason'                =>  $request->input('reason'),
+            'recommending_approval' =>  $request->user()->role == 'supervisor' ? 'Approved' : 'Pending',
+            'final_approval'        =>  'Pending',
+            'count'                 =>  $diff->d == 0 ? 1 : $diff->d
         ];
 
         $credit = Credit::where('user_id', auth()->user()->id)->first();
@@ -70,12 +70,10 @@ class LeaveController extends Controller
             switch ($request->input('type')) {
                 case 'VL':
                     if ($credit->VL > 0) {
-                        $this->leave->saveLeave($data);
+                        $leave = $this->leave->saveLeave($data);
                         Notification::route('mail', $supervisorEmail)->notify(new LeaveEmToSupNotification($data));
-            
-                        return response()->json([
-                            'message'   =>  'Leave Submitted!'
-                        ], 200);
+                        
+                        return response()->json(Leave::where('id', $leave->id)->first()->format(), 200);
                     } else {
                         return response()->json([
                             'message'   =>  'You don\'t have Vacation Leave(s)'
@@ -85,8 +83,10 @@ class LeaveController extends Controller
 
                 case 'SL':
                     if ($credit->SL > 0) {
-                        $this->leave->saveLeave($data);
+                        $leave = $this->leave->saveLeave($data);
                         Notification::route('mail', $supervisorEmail)->notify(new LeaveEmToSupNotification($data));
+
+                        return response()->json(Leave::where('id', $leave->id)->first()->format(), 200);
                     } else {
                         return response()->json([
                             'message'   =>  'You don\'t have Sick Leave(s)'
@@ -96,12 +96,10 @@ class LeaveController extends Controller
 
                 case 'PTO':
                     if ($credit->PTO > 0) {
-                        $this->leave->saveLeave($data);
+                        $leave = $this->leave->saveLeave($data);
                         Notification::route('mail', $supervisorEmail)->notify(new LeaveEmToSupNotification($data));
-
-                        return response()->json([
-                            'message'   =>  'Leave Submitted!'
-                        ], 200);
+                        
+                        return response()->json(Leave::where('id', $leave->id)->first()->format(), 200);
                     } else {
                         return response()->json([
                             'message'   =>  'You don\'t have Personal Time Off(s)'
@@ -110,8 +108,10 @@ class LeaveController extends Controller
                     break;
                 case 'VL - Half':
                     if ($credit->VL > 0) {
-                        $this->leave->saveLeave($data);
+                        $leave = $this->leave->saveLeave($data);
                         Notification::route('mail', $supervisorEmail)->notify(new LeaveEmToSupNotification($data));
+
+                        return response()->json(Leave::where('id', $leave->id)->first()->format(), 200);
                     } else {
                         return response()->json([
                             'message'   =>  'You don\'t have Vacation Leave(s)'
@@ -121,8 +121,10 @@ class LeaveController extends Controller
 
                 case 'SL - Half':
                     if ($credit->SL > 0) {
-                        $this->leave->saveLeave($data);
+                        $leave = $this->leave->saveLeave($data);
                         Notification::route('mail', $supervisorEmail)->notify(new LeaveEmToSupNotification($data));
+
+                        return response()->json(Leave::where('id', $leave->id)->first()->format(), 200);
                     } else {
                         return response()->json([
                             'message'   =>  'You don\'t have Sick Leave(s)'
@@ -132,8 +134,10 @@ class LeaveController extends Controller
 
                 case 'PTO - Half':
                     if ($credit->PTO > 0) {
-                        $this->leave->saveLeave($data);
+                        $leave = $this->leave->saveLeave($data);
                         Notification::route('mail', $supervisorEmail)->notify(new LeaveEmToSupNotification($data));
+
+                        return response()->json(Leave::where('id', $leave->id)->first()->format(), 200);
                     } else {
                         return response()->json([
                             'message'   =>  'You don\'t have Personal Time Off(s)'
@@ -143,8 +147,10 @@ class LeaveController extends Controller
                 
                 case 'Special':
                     if ($credit->special_leave > 0) {
-                        $this->leave->saveLeave($data);
+                        $leave = $this->leave->saveLeave($data);
                         Notification::route('mail', $supervisorEmail)->notify(new LeaveEmToSupNotification($data));
+
+                        return response()->json(Leave::where('id', $leave->id)->first()->format(), 200);
                     } else {
                         return response()->json([
                             'message'   =>  'You don\'t have Special Leave(s)'
@@ -154,8 +160,10 @@ class LeaveController extends Controller
 
                 case 'Special - Half':
                     if ($credit->special_leave > 0) {
-                        $this->leave->saveLeave($data);
+                        $leave = $this->leave->saveLeave($data);
                         Notification::route('mail', $supervisorEmail)->notify(new LeaveEmToSupNotification($data));
+
+                        return response()->json(Leave::where('id', $leave->id)->first()->format(), 200);
                     } else {
                         return response()->json([
                             'message'   =>  'You don\'t have Special Leave(s)'
@@ -164,12 +172,10 @@ class LeaveController extends Controller
                     break;
             }
         } else {
-            $this->leave->saveLeave($data);
+            $leave = $this->leave->saveLeave($data);
             Notification::route('mail', $supervisorEmail)->notify(new LeaveEmToSupNotification($data));
 
-            return response()->json([
-                'message'   =>  'Leave Submitted!'
-            ], 200);
+            return response()->json(Leave::where('id', $leave->id)->first()->format(), 200);
         }
     }
 

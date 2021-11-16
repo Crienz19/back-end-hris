@@ -9,11 +9,7 @@ use App\Http\Controllers\Controller;
 
 class TripController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth:api');
-    }
-
+    
     public function getEmployeeTrip()
     {
         $trips = $this->getTripByRole('employee');

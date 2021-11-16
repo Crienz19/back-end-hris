@@ -24,10 +24,6 @@ class COEController extends Controller
             'status'    =>  'Acknowledged'
         ]);
 
-        
-
-        return response()->json([
-            'message'   =>  'COE Request Acknowledged!'
-        ], 200);
+        return new COEResourceWithEmployeeDetailsAndActions($coe->first());
     }
 }

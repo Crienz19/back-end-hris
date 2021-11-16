@@ -20,11 +20,7 @@ class COEResource extends JsonResource
             'date_needed'   =>  $this->date_needed,
             'compensation'  =>  $this->compensation,
             'status'        =>  $this->status,
-            'created_at'    =>  $this->created_at,
-            'actions'       =>  [
-                'update'    =>  route('em.coes.update', $this->id),
-                'delete'    =>  route('em.coes.destroy', $this->id)
-            ]
+            'created_at'    =>  $this->created_at->toDayDateTimeString()
         ];
     }
 }

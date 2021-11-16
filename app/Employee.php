@@ -52,7 +52,11 @@ class Employee extends Model
             'branch_id'         =>  $this->branch_id,
             'skype_id'          =>  $this->skype_id,
             'department_id'     =>  $this->department_id,
-            'position'          =>  $this->position
+            'position'          =>  $this->position,
+            'department'        =>  $this->department,
+            'branch'            =>  $this->branch,
+            'credits'           =>  $this->credits,
+            'user'              =>  $this->user()->first()->baseFormat() 
         ];
     }
 
@@ -66,7 +70,7 @@ class Employee extends Model
         return $this->hasOne('App\Department', 'id', 'department_id');
     }
 
-    public function credit()
+    public function credits()
     {
         return $this->hasOne('App\Credit', 'user_id', 'user_id');
     }

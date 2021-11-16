@@ -29,7 +29,7 @@ class OvertimeResourceWithEmployeeAndActionsForSup extends JsonResource
             'reason'    =>  $this->reason,
             'status'    =>  $this->status,
             'employee'  =>  new EmployeeResource($this->employee),
-            'created_at'=>  $this->created_at,
+            'created_at'=>  $this->created_at->toDateTimeString(),
             'actions'   =>  [
                 'approve'       =>  route('sv.overtimes.approve', $this->id),
                 'disapprove'    =>  route('sv.overtimes.disapprove', $this->id)

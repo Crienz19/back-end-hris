@@ -22,7 +22,7 @@ class COEResourceWithEmployeeDetailsAndActions extends JsonResource
             'date_needed'   =>  $this->date_needed,
             'compensation'  =>  $this->compensation,
             'status'        =>  $this->status,
-            'created_at'    =>  $this->created_at,
+            'created_at'    =>  $this->created_at->toDateTimeString(),
             'actions'       =>  [
                 'acknowledge'    =>  route('hr.coes.acknowledge', $this->id),
             ]

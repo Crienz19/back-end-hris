@@ -14,7 +14,6 @@ class OvertimeController extends Controller
     private $overtime;
     public function __construct(IOvertimeRepository $overtimeRepository)
     {
-        $this->middleware('auth:api');
         $this->overtime = $overtimeRepository;
     }
 
@@ -41,11 +40,15 @@ class OvertimeController extends Controller
 
     public function update(Request $request, $id)
     {
-        $updatedOvertime = $this->overtime->updateOvertime(['id' => $id], $request->all());
+        $updatedOvertime = $this->overtime->updateOvertime(['id' => $id], [
+            'date'          =>  $request->input('date'),
+            'from'          =>  $request->input('from'),
+            'to'            =>  $request->input('to'),
+            'reason'        =>  $request->input('reason'),
+            'status'        =>  $request->input('status')
+        ]);
 
-        return response()->json([
-            'message'   =>  'Overtime Updated'
-        ], 200);
+        return new OvertimeResourceWithEmployeeDetails($this->overtime->getOneOvertime(['id' => $id]));
     }
 
     public function destroy($id)

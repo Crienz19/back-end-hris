@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\Employee;
 
+use App\Employee;
 use App\Http\Resources\Employee\EmployeeResource;
 use App\Repositories\Employee\IEmployeeRepository;
 use Illuminate\Http\Request;
@@ -13,7 +14,6 @@ class EmployeeController extends Controller
 
     public function __construct(IEmployeeRepository $employeeRepository)
     {
-        $this->middleware('auth:api');
         $this->employee = $employeeRepository;
     }
 

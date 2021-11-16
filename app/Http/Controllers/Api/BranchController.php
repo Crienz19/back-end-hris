@@ -14,7 +14,6 @@ class BranchController extends Controller
 
     public function __construct(IBranchRepository $branchRepository)
     {
-        $this->middleware('auth:api');
 
         $this->branch = $branchRepository;
     }
@@ -78,8 +77,8 @@ class BranchController extends Controller
     {
         $branch = Branch::where('id', $id);
         $branch->update([
-            'name'          =>  $request->has('name') ? $request->input('name') : $branch->first()->name,
-            'display_name'  =>  $request->has('display_name') ? $request->input('name') : $branch->first()->display_name
+            'name'          =>  $request->input('name'),
+            'display_name'  =>  $request->input('display_name')
         ]);
 
         return response()->json($branch->first()->format());

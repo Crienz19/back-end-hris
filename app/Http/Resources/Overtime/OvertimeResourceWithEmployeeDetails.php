@@ -30,7 +30,7 @@ class OvertimeResourceWithEmployeeDetails extends JsonResource
             'reason'    =>  $this->reason,
             'status'    =>  $this->status,
             'employee'  =>  new EmployeeResource($this->employee),
-            'created_at'=>  $this->created_at
+            'created_at'=>  $this->created_at->toDateTimeString()
         ];
     }
 }
