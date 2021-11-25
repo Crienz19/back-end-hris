@@ -10,7 +10,7 @@ class EmployeeController extends Controller
 {
     public function getUserPersonalDetails()
     {
-        return Employee::where('user_id', request()->user()->id)->first();
+        return Employee::where('user_id', request()->user()->id)->first()->format();
     }
 
     public function getUserLeaveCredits()
