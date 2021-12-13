@@ -56,7 +56,7 @@ class Employee extends Model
             'department'        =>  $this->department,
             'branch'            =>  $this->branch,
             'credits'           =>  $this->credits,
-            'user'              =>  $this->user()->first()->baseFormat() 
+            'user'              =>  $this->user()->first() 
         ];
     }
 
